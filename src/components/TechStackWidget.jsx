@@ -1,32 +1,50 @@
 import React, { useState } from 'react';
-import { Cpu, Sparkles } from 'lucide-react';
+import { Cpu } from 'lucide-react';
+import {
+  SiPython,
+  SiJavascript,
+  SiHtml5,
+  SiCss,
+  SiPhp,
+  SiReact,
+  SiTailwindcss,
+  SiVite,
+  SiNodedotjs,
+  SiFastapi,
+  SiPostgresql,
+  SiMysql,
+  SiSupabase,
+  SiGit,
+  SiRender,
+} from 'react-icons/si';
+import { VscVscode } from 'react-icons/vsc';
 import { playHoverSound, playClickSound } from '../utils/sound';
 
 export const TechStackWidget = () => {
   const [isPaused, setIsPaused] = useState(false);
 
-  // Exact requested items to scroll
-  const techItems = [
-    'Python',
-    'JavaScript',
-    'HTML5',
-    'CSS3',
-    'PHP',
-    'React',
-    'Tailwind CSS',
-    'Vite',
-    'Node.js',
-    'FastAPI',
-    'PostgreSQL',
-    'MySQL',
-    'Supabase',
-    'Git',
-    'VS Code',
-    'Render',
+  // Exact 16 tech skills with official brand icons and distinct colors
+  const techList = [
+    { name: 'Python', icon: SiPython, color: 'text-[#3776AB]' },
+    { name: 'JavaScript', icon: SiJavascript, color: 'text-[#EAB308]' },
+    { name: 'HTML5', icon: SiHtml5, color: 'text-[#E34F26]' },
+    { name: 'CSS3', icon: SiCss, color: 'text-[#1572B6]' },
+    { name: 'PHP', icon: SiPhp, color: 'text-[#777BB4]' },
+    { name: 'React', icon: SiReact, color: 'text-[#0EA5E9]' },
+    { name: 'Tailwind CSS', icon: SiTailwindcss, color: 'text-[#06B6D4]' },
+    { name: 'Vite', icon: SiVite, color: 'text-[#646CFF]' },
+    { name: 'Node.js', icon: SiNodedotjs, color: 'text-[#22C55E]' },
+    { name: 'FastAPI', icon: SiFastapi, color: 'text-[#009688]' },
+    { name: 'PostgreSQL', icon: SiPostgresql, color: 'text-[#4169E1]' },
+    { name: 'MySQL', icon: SiMysql, color: 'text-[#00758F]' },
+    { name: 'Supabase', icon: SiSupabase, color: 'text-[#3ECF8E]' },
+    { name: 'Git', icon: SiGit, color: 'text-[#F05032]' },
+    { name: 'VS Code', icon: VscVscode, color: 'text-[#007ACC]' },
+    { name: 'Render', icon: SiRender, color: 'text-[#0EA5E9]' },
   ];
 
-  // Duplicate for seamless infinite loop
-  const marqueeItems = [...techItems, ...techItems, ...techItems, ...techItems];
+  // Duplicate 4x for continuous seamless infinite marquee
+  const marqueeItems = [...techList, ...techList, ...techList, ...techList];
 
   return (
     <div id="skills" className="space-y-6">
@@ -35,7 +53,7 @@ export const TechStackWidget = () => {
         <div>
           <div className="flex items-center gap-2 text-xs font-mono text-sky-600 uppercase tracking-widest mb-1.5 font-semibold">
             <Cpu size={14} className="text-sky-500" />
-            <span>Interactive Tech Marquee</span>
+            <span>Interactive Tech Stack</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold font-heading text-slate-900">
             Core Engineering Stack
@@ -51,7 +69,7 @@ export const TechStackWidget = () => {
 
       {/* Infinite Horizontal Auto-Scrolling Marquee Track */}
       <div
-        className="relative w-full py-4 overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm"
+        className="relative w-full py-5 overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
@@ -61,25 +79,30 @@ export const TechStackWidget = () => {
 
         <div className="flex w-max">
           <div
-            className={`flex items-center gap-4 py-2 ${
+            className={`flex items-center gap-4 py-1.5 ${
               isPaused ? '' : 'animate-marquee-left'
             }`}
             style={{
               animationPlayState: isPaused ? 'paused' : 'running',
-              animationDuration: '32s',
+              animationDuration: '35s',
             }}
           >
-            {marqueeItems.map((tech, idx) => (
-              <div
-                key={`${tech}-${idx}`}
-                onMouseEnter={playHoverSound}
-                onClick={playClickSound}
-                className="bg-slate-50 border border-slate-200 text-slate-800 hover:border-sky-500 hover:text-sky-500 transition-colors px-6 py-3 rounded-full font-medium font-heading text-sm sm:text-base flex-shrink-0 cursor-pointer shadow-sm select-none flex items-center gap-2 group"
-              >
-                <span className="w-2 h-2 rounded-full bg-sky-400 group-hover:scale-125 transition-transform" />
-                <span>{tech}</span>
-              </div>
-            ))}
+            {marqueeItems.map((tech, idx) => {
+              const Icon = tech.icon;
+              return (
+                <div
+                  key={`${tech.name}-${idx}`}
+                  onMouseEnter={playHoverSound}
+                  onClick={playClickSound}
+                  className="bg-slate-50 border border-slate-200 text-slate-800 hover:border-sky-500 hover:text-sky-500 transition-colors px-6 py-3 rounded-full font-medium font-heading text-sm sm:text-base flex-shrink-0 cursor-pointer shadow-sm select-none flex items-center gap-2.5 group"
+                >
+                  <Icon
+                    className={`text-lg sm:text-xl transition-transform duration-200 group-hover:scale-110 ${tech.color}`}
+                  />
+                  <span>{tech.name}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
