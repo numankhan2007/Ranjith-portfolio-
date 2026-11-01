@@ -10,9 +10,8 @@ export const LiveStatsWidget = () => {
       highlight: 'Grade A+ Distinction',
       sub: 'Datheon Python Programming',
       icon: Award,
-      accentBorder: 'group-hover:border-amber-400/50',
-      badgeClass: 'text-amber-400 border-amber-400/30 bg-amber-400/10',
-      iconColor: 'text-amber-400',
+      badgeClass: 'text-sky-700 border-sky-200 bg-sky-50',
+      iconColor: 'text-sky-600',
     },
     {
       label: 'Open Source',
@@ -20,9 +19,8 @@ export const LiveStatsWidget = () => {
       highlight: 'VGLUG Contributor',
       sub: 'Python Preprocessing Pipelines',
       icon: GitPullRequest,
-      accentBorder: 'group-hover:border-blue-500/50',
-      badgeClass: 'text-blue-400 border-blue-500/30 bg-blue-500/10',
-      iconColor: 'text-blue-400',
+      badgeClass: 'text-emerald-700 border-emerald-200 bg-emerald-50',
+      iconColor: 'text-emerald-600',
     },
     {
       label: 'Specialized Badges',
@@ -30,9 +28,8 @@ export const LiveStatsWidget = () => {
       highlight: 'Nasscom, IBM, Kaggle',
       sub: 'Generative AI & Cloud',
       icon: ShieldCheck,
-      accentBorder: 'group-hover:border-blue-500/50',
-      badgeClass: 'text-blue-300 border-blue-500/30 bg-blue-500/10',
-      iconColor: 'text-blue-400',
+      badgeClass: 'text-indigo-700 border-indigo-200 bg-indigo-50',
+      iconColor: 'text-indigo-600',
     },
   ];
 
@@ -44,21 +41,18 @@ export const LiveStatsWidget = () => {
           <div
             key={idx}
             onMouseEnter={playHoverSound}
-            className={`glass-card rounded-2xl p-6 sm:p-7 border border-white/10 bg-white/[0.03] relative overflow-hidden group ${stat.accentBorder} transition-all duration-300 shadow-xl`}
+            className="rounded-2xl p-6 sm:p-7 bg-white border border-slate-200 shadow-sm hover:border-sky-500 hover:shadow-md transition-all duration-200 group"
           >
-            {/* Top ambient glow */}
-            <div className="absolute -top-12 -right-12 w-28 h-28 bg-white/5 rounded-full blur-2xl group-hover:bg-amber-400/10 transition-all pointer-events-none" />
-
             <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-mono uppercase tracking-widest text-slate-400">
+              <span className="text-xs font-mono uppercase tracking-widest text-slate-500">
                 {stat.label}
               </span>
-              <div className={`p-2.5 rounded-xl bg-white/[0.05] border border-white/10 ${stat.iconColor} group-hover:scale-110 transition-all`}>
+              <div className={`p-2.5 rounded-xl bg-slate-50 border border-slate-200 ${stat.iconColor} group-hover:scale-110 transition-transform`}>
                 <Icon size={18} />
               </div>
             </div>
 
-            <div className="text-3xl sm:text-4xl font-extrabold font-heading text-white tracking-tight">
+            <div className="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 tracking-tight">
               {stat.value}
             </div>
 
@@ -68,7 +62,7 @@ export const LiveStatsWidget = () => {
               </span>
             </div>
 
-            <p className="mt-2.5 text-xs text-slate-400 line-clamp-1 font-light">
+            <p className="mt-2.5 text-xs text-slate-500 line-clamp-1">
               {stat.sub}
             </p>
           </div>

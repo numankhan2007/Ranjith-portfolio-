@@ -7,7 +7,6 @@ export const CustomCursor = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
-  // Smooth springs for high-end fluid motion
   const cursorX = useSpring(0, { damping: 25, stiffness: 350 });
   const cursorY = useSpring(0, { damping: 25, stiffness: 350 });
 
@@ -69,7 +68,7 @@ export const CustomCursor = () => {
 
   return (
     <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden">
-      {/* Outer Halo Ring - Royal Blue / Gold on hover */}
+      {/* Outer Halo Ring - Sky Blue */}
       <motion.div
         style={{
           x: ringX,
@@ -78,18 +77,15 @@ export const CustomCursor = () => {
           translateY: '-50%',
         }}
         animate={{
-          scale: isClicked ? 0.8 : isHovered ? 1.7 : 1,
-          borderColor: isHovered ? '#FBBF24' : 'rgba(37, 99, 235, 0.5)',
-          backgroundColor: isHovered ? 'rgba(251, 191, 36, 0.08)' : 'transparent',
-          boxShadow: isHovered
-            ? '0 0 20px rgba(251, 191, 36, 0.5)'
-            : '0 0 10px rgba(37, 99, 235, 0.25)',
+          scale: isClicked ? 0.8 : isHovered ? 1.6 : 1,
+          borderColor: isHovered ? '#0EA5E9' : 'rgba(14, 165, 233, 0.45)',
+          backgroundColor: isHovered ? 'rgba(14, 165, 233, 0.08)' : 'transparent',
         }}
         transition={{ type: 'spring', damping: 20, stiffness: 300, mass: 0.5 }}
-        className="fixed top-0 left-0 w-8 h-8 rounded-full border border-blue-500/40 backdrop-blur-[1px]"
+        className="fixed top-0 left-0 w-8 h-8 rounded-full border border-sky-500/50"
       />
 
-      {/* Inner Dot - Metallic Gold */}
+      {/* Inner Dot - Sky Blue */}
       <motion.div
         style={{
           x: cursorX,
@@ -98,11 +94,11 @@ export const CustomCursor = () => {
           translateY: '-50%',
         }}
         animate={{
-          scale: isClicked ? 1.5 : isHovered ? 0.5 : 1,
-          backgroundColor: isHovered ? '#FBBF24' : '#60A5FA',
+          scale: isClicked ? 1.4 : isHovered ? 0.5 : 1,
+          backgroundColor: '#0EA5E9',
         }}
         transition={{ type: 'spring', damping: 25, stiffness: 450 }}
-        className="fixed top-0 left-0 w-2 h-2 rounded-full shadow-[0_0_8px_#FBBF24]"
+        className="fixed top-0 left-0 w-2 h-2 rounded-full shadow-sm"
       />
     </div>
   );

@@ -10,7 +10,7 @@ export const EducationWidget = () => {
       location: 'Villupuram, Tamil Nadu',
       score: 'Undergraduate Degree',
       status: 'Current Program',
-      accent: 'border-blue-500/40 text-blue-400 bg-blue-500/10',
+      accent: 'border-sky-200 text-sky-700 bg-sky-50',
       icon: GraduationCap,
       description: 'Foundations in Data Structures, Algorithms, RDBMS, Operating Systems, and Modern Software Engineering.',
     },
@@ -20,7 +20,7 @@ export const EducationWidget = () => {
       location: 'Panamalaippettai',
       score: '68.17%',
       status: 'Completed',
-      accent: 'border-amber-400/40 text-amber-300 bg-amber-400/10',
+      accent: 'border-emerald-200 text-emerald-700 bg-emerald-50',
       icon: BookOpen,
       description: 'State Board Curriculum with focus on Mathematics and Computer Science foundations.',
     },
@@ -30,31 +30,28 @@ export const EducationWidget = () => {
       location: 'Siruvalai',
       score: '51.2%',
       status: 'Completed',
-      accent: 'border-white/20 text-slate-300 bg-white/[0.05]',
+      accent: 'border-slate-200 text-slate-700 bg-slate-50',
       icon: Award,
       description: 'Secondary School Leaving Certificate (SSLC) foundational studies.',
     },
   ];
 
   return (
-    <div id="education" className="glass-card rounded-3xl p-8 sm:p-10 border border-white/10 bg-white/[0.03] relative overflow-hidden group shadow-2xl">
-      {/* Background ambient glow */}
-      <div className="absolute top-0 right-1/4 w-80 h-80 bg-blue-600/10 rounded-full blur-[140px] pointer-events-none group-hover:bg-amber-400/10 transition-all" />
-
+    <div id="education" className="rounded-3xl p-8 sm:p-10 bg-white border border-slate-200 shadow-sm relative overflow-hidden group">
       {/* Header */}
-      <div className="flex items-center justify-between pb-6 mb-8 border-b border-white/10">
+      <div className="flex items-center justify-between pb-6 mb-8 border-b border-slate-100">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-amber-400 uppercase tracking-widest mb-1.5">
-            <GraduationCap size={14} className="text-amber-400" />
+          <div className="flex items-center gap-2 text-xs font-mono text-sky-600 uppercase tracking-widest mb-1.5 font-semibold">
+            <GraduationCap size={14} className="text-sky-500" />
             <span>Academic Milestones</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold font-heading text-white">
+          <h2 className="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900">
             Education & Academic Track
           </h2>
         </div>
       </div>
 
-      {/* 3 Clean Dark Glass Cards for Education */}
+      {/* 3 Clean White Cards for Education */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {education.map((item, idx) => {
           const Icon = item.icon;
@@ -62,43 +59,43 @@ export const EducationWidget = () => {
             <div
               key={idx}
               onMouseEnter={playHoverSound}
-              className="glass-panel rounded-2xl p-6 sm:p-7 border border-white/10 hover:border-amber-400/35 bg-white/[0.03] hover:bg-white/[0.06] transition-all duration-300 flex flex-col justify-between group/edu shadow-lg"
+              className="rounded-2xl p-6 sm:p-7 bg-slate-50/50 border border-slate-200 hover:border-sky-500 hover:bg-white transition-all duration-200 flex flex-col justify-between group/edu shadow-sm"
             >
               <div>
                 {/* Top: Icon & Score Badge */}
                 <div className="flex items-center justify-between mb-5">
-                  <div className="p-3 rounded-xl bg-white/[0.05] border border-white/10 text-amber-400 group-hover/edu:scale-110 transition-transform">
+                  <div className="p-3 rounded-xl bg-white border border-slate-200 text-sky-600 group-hover/edu:scale-110 transition-transform shadow-sm">
                     <Icon size={20} />
                   </div>
-                  <span className={`text-xs font-mono font-bold px-3 py-1 rounded-lg border ${item.accent}`}>
+                  <span className={`text-xs font-mono font-semibold px-3 py-1 rounded-lg border ${item.accent}`}>
                     {item.score}
                   </span>
                 </div>
 
                 {/* Degree Name */}
-                <h3 className="text-lg sm:text-xl font-bold font-heading text-white group-hover/edu:text-amber-400 transition-colors">
+                <h3 className="text-lg sm:text-xl font-bold font-heading text-slate-900 group-hover/edu:text-sky-600 transition-colors">
                   {item.degree}
                 </h3>
 
                 {/* Institution & Location */}
-                <p className="text-sm font-medium text-slate-300 font-mono mt-1.5">
+                <p className="text-sm font-medium text-slate-700 font-mono mt-1.5">
                   {item.institution}
                 </p>
-                <div className="flex items-center gap-1.5 text-xs text-slate-400 mt-1 font-mono">
-                  <MapPin size={12} className="text-blue-400" />
+                <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-1 font-mono">
+                  <MapPin size={12} className="text-sky-500" />
                   <span>{item.location}</span>
                 </div>
 
                 {/* Detail */}
-                <p className="mt-4 text-xs sm:text-sm text-slate-400 leading-relaxed font-light">
+                <p className="mt-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
                   {item.description}
                 </p>
               </div>
 
               {/* Status pill at bottom */}
-              <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono text-slate-400">
+              <div className="mt-6 pt-4 border-t border-slate-200 flex items-center justify-between text-xs font-mono text-slate-500">
                 <span>STATUS</span>
-                <span className="font-semibold text-white">{item.status}</span>
+                <span className="font-semibold text-slate-900">{item.status}</span>
               </div>
             </div>
           );

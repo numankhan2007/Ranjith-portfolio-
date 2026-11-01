@@ -24,7 +24,7 @@ export const ProjectsWidget = () => {
         'Full-featured inventory management platform designed to automate book issues, return timestamping, fine calculations, and catalog indexing. Engineered with optimized SQL queries and responsive user dashboards.',
       tech: ['Python', 'HTML5', 'CSS3', 'JavaScript', 'SQL'],
       deployment: 'Local & Cloud Compatible',
-      status: 'Production Architecture',
+      status: 'Production Ready',
       featured: false,
       githubUrl: 'https://github.com/ranjithmuthu2407-ux',
       demoUrl: 'https://github.com/ranjithmuthu2407-ux',
@@ -37,11 +37,11 @@ export const ProjectsWidget = () => {
       {/* Section Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-amber-400 uppercase tracking-widest mb-1.5">
-            <FolderGit2 size={14} className="text-amber-400" />
+          <div className="flex items-center gap-2 text-xs font-mono text-sky-600 uppercase tracking-widest mb-1.5 font-semibold">
+            <FolderGit2 size={14} className="text-sky-500" />
             <span>Featured Deployments</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold font-heading text-white">
+          <h2 className="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900">
             Projects & System Architecture
           </h2>
         </div>
@@ -51,15 +51,15 @@ export const ProjectsWidget = () => {
           rel="noopener noreferrer"
           onMouseEnter={playHoverSound}
           onClick={playClickSound}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 hover:border-amber-400/40 text-slate-200 text-xs font-mono transition-all group shadow-lg"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white border border-slate-200 hover:border-sky-500 text-slate-700 hover:text-sky-600 text-xs font-mono transition-all group shadow-sm"
         >
           <Github size={15} />
           <span>Explore All Repos</span>
-          <ExternalLink size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform text-amber-400" />
+          <ExternalLink size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform text-sky-500" />
         </a>
       </div>
 
-      {/* Projects Grid: 2 Clean Dark Glass Cards */}
+      {/* Projects Grid: 2 Clean White Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {projects.map((project, idx) => {
           const Icon = project.icon;
@@ -67,24 +67,21 @@ export const ProjectsWidget = () => {
             <div
               key={idx}
               onMouseEnter={playHoverSound}
-              className="group glass-card rounded-3xl p-8 sm:p-10 border border-white/10 bg-white/[0.03] hover:border-amber-400/40 transition-all duration-300 relative overflow-hidden flex flex-col justify-between shadow-2xl"
+              className="group rounded-3xl p-8 sm:p-10 bg-white border border-slate-200 hover:border-sky-500 hover:shadow-md transition-all duration-200 relative overflow-hidden flex flex-col justify-between shadow-sm"
             >
-              {/* Subtle top ambient glow */}
-              <div className="absolute -top-24 -right-24 w-60 h-60 bg-blue-600/10 rounded-full blur-[120px] pointer-events-none group-hover:bg-amber-400/10 transition-all duration-500" />
-
               {/* Card Top: Badges & Links */}
               <div className="relative z-10">
                 <div className="flex items-center justify-between gap-3 mb-6">
                   <div className="flex items-center gap-3">
-                    <div className="p-3 rounded-2xl bg-white/[0.05] border border-white/10 text-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.2)]">
+                    <div className="p-3 rounded-2xl bg-sky-50 border border-sky-100 text-sky-600">
                       <Icon size={22} />
                     </div>
                     <div>
-                      <span className="text-xs font-mono text-blue-400 flex items-center gap-1.5">
+                      <span className="text-xs font-mono text-sky-600 font-semibold flex items-center gap-1.5">
                         <Server size={12} />
                         {project.deployment}
                       </span>
-                      <h4 className="text-xs font-mono text-slate-400 mt-0.5">
+                      <h4 className="text-xs font-mono text-slate-500 mt-0.5">
                         {project.status}
                       </h4>
                     </div>
@@ -98,7 +95,7 @@ export const ProjectsWidget = () => {
                       rel="noopener noreferrer"
                       title="View Source on GitHub"
                       onClick={playClickSound}
-                      className="p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.1] border border-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                      className="p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 hover:text-slate-900 transition-colors cursor-pointer"
                     >
                       <Github size={17} />
                     </a>
@@ -108,7 +105,7 @@ export const ProjectsWidget = () => {
                       rel="noopener noreferrer"
                       title="Open Live Preview"
                       onClick={playClickSound}
-                      className="p-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white transition-all cursor-pointer shadow-[0_0_15px_rgba(37,99,235,0.4)]"
+                      className="p-2.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white transition-all cursor-pointer shadow-sm"
                     >
                       <ExternalLink size={17} />
                     </a>
@@ -116,34 +113,34 @@ export const ProjectsWidget = () => {
                 </div>
 
                 {/* Title & Tagline */}
-                <h3 className="text-2xl sm:text-3xl font-extrabold font-heading text-white group-hover:text-amber-400 transition-colors">
+                <h3 className="text-2xl sm:text-3xl font-extrabold font-heading text-slate-900 group-hover:text-sky-600 transition-colors">
                   {project.title}
                 </h3>
-                <p className="text-xs font-mono text-blue-400 mt-1.5 mb-4">
+                <p className="text-xs font-mono text-sky-600 mt-1.5 mb-4">
                   // {project.tagline}
                 </p>
 
                 {/* Description */}
-                <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-8 font-light">
+                <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-8">
                   {project.description}
                 </p>
               </div>
 
-              {/* Card Bottom: Tech Pills & Terminal Status */}
-              <div className="relative z-10 pt-6 border-t border-white/10">
+              {/* Card Bottom: Tech Pills & Status */}
+              <div className="relative z-10 pt-6 border-t border-slate-100">
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.tech.map((t, tIdx) => (
                     <span
                       key={tIdx}
-                      className="text-xs font-mono text-slate-300 bg-white/[0.04] px-3 py-1.5 rounded-lg border border-white/10 group-hover:border-blue-500/30 transition-colors"
+                      className="text-xs font-mono text-slate-700 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200"
                     >
                       {t}
                     </span>
                   ))}
                 </div>
 
-                <div className="flex items-center justify-between text-xs font-mono text-slate-400">
-                  <span className="flex items-center gap-1.5 text-blue-400">
+                <div className="flex items-center justify-between text-xs font-mono text-slate-500">
+                  <span className="flex items-center gap-1.5 text-sky-600 font-medium">
                     <Terminal size={13} />
                     <span>SYS::VERIFIED</span>
                   </span>
@@ -152,7 +149,7 @@ export const ProjectsWidget = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={playClickSound}
-                    className="inline-flex items-center gap-1 text-amber-400 hover:underline cursor-pointer font-medium"
+                    className="inline-flex items-center gap-1 text-sky-600 hover:underline cursor-pointer font-medium"
                   >
                     <span>Inspect Code</span>
                     <ExternalLink size={11} />

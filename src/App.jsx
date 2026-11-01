@@ -16,14 +16,14 @@ export function App() {
   const [isContactOpen, setIsContactOpen] = useState(false);
 
   return (
-    <div className="relative min-h-screen bg-[#0A0A0A] text-slate-100 overflow-x-hidden selection:bg-blue-600 selection:text-white">
-      {/* Custom High-Performance Cursor */}
+    <div className="relative min-h-screen bg-[#F8FAFC] text-slate-900 overflow-x-hidden selection:bg-sky-500 selection:text-white">
+      {/* Light Mode Custom Cursor */}
       <CustomCursor />
 
-      {/* Deep Solid Black Background with Ambient Lighting */}
+      {/* Subtle Light Mode Background */}
       <BackgroundAurora />
 
-      {/* Modern Glass Dock Navbar */}
+      {/* Clean White Floating Dock Navbar */}
       <Navbar onOpenContact={() => setIsContactOpen(true)} />
 
       {/* Main Container with Massive Whitespace & Breathable Separation */}
@@ -34,33 +34,33 @@ export function App() {
           <LiveStatsWidget />
         </section>
 
-        {/* Section 2: Technical Repertoire & Cyber-Timeline */}
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          <div className="lg:col-span-5 flex flex-col">
-            <TechStackWidget />
-          </div>
-          <div className="lg:col-span-7 flex flex-col">
-            <ExperienceWidget />
-          </div>
+        {/* Section 2: Live Scrolling Tech Stack (Infinite Marquee) */}
+        <section>
+          <TechStackWidget />
         </section>
 
-        {/* Section 3: Featured Projects */}
+        {/* Section 3: Experience & Cyber-Timeline */}
+        <section>
+          <ExperienceWidget />
+        </section>
+
+        {/* Section 4: Featured Projects */}
         <section>
           <ProjectsWidget />
         </section>
 
-        {/* Section 4: Live Scrolling Certificates (Seamless Infinite Marquee) */}
+        {/* Section 5: Live Scrolling Certifications Marquee */}
         <section>
           <CertificationsMarquee />
         </section>
 
-        {/* Section 5: Academic Track */}
+        {/* Section 6: Education & Academic Track */}
         <section>
           <EducationWidget />
         </section>
       </main>
 
-      {/* Section 6: Connection Node & Footer */}
+      {/* Section 7: Connection Node & Footer */}
       <ConnectionFooter onOpenContact={() => setIsContactOpen(true)} />
 
       {/* Interactive Communication Modal */}
