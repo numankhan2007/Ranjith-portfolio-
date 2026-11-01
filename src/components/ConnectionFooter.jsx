@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
-import { Mail, Github, Linkedin, Copy, Check, ExternalLink, ArrowUp, Terminal, Shield, Sparkles } from 'lucide-react';
+import { Mail, Github, Linkedin, Instagram, Copy, Check, ExternalLink, ArrowUp, Terminal, Shield, Sparkles } from 'lucide-react';
 import { playClickSound, playHoverSound } from '../utils/sound';
+
+// Modern X (formerly Twitter) Icon SVG component
+const XIcon = ({ size = 18, className = '' }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className={className}
+  >
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+);
 
 export const ConnectionFooter = ({ onOpenContact }) => {
   const [copied, setCopied] = useState(false);
@@ -24,14 +37,32 @@ export const ConnectionFooter = ({ onOpenContact }) => {
       handle: 'github.com/ranjithmuthu2407-ux',
       url: 'https://github.com/ranjithmuthu2407-ux',
       icon: Github,
-      accent: 'hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(0,240,255,0.3)]',
+      accent: 'hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(0,240,255,0.35)]',
+      iconColor: 'text-cyan-400 group-hover/link:text-cyan-300',
     },
     {
       name: 'LinkedIn',
       handle: 'linkedin.com/in/ranjith-m-cs',
       url: 'https://linkedin.com/in/ranjith-m-cs',
       icon: Linkedin,
-      accent: 'hover:border-blue-400 hover:shadow-[0_0_20px_rgba(0,112,243,0.3)]',
+      accent: 'hover:border-blue-400 hover:shadow-[0_0_20px_rgba(0,112,243,0.35)]',
+      iconColor: 'text-blue-400 group-hover/link:text-blue-300',
+    },
+    {
+      name: 'Twitter / X',
+      handle: 'x.com/RANJITHMcs',
+      url: 'https://x.com/RANJITHMcs',
+      icon: XIcon,
+      accent: 'hover:border-sky-400 hover:shadow-[0_0_20px_rgba(56,189,248,0.35)]',
+      iconColor: 'text-sky-400 group-hover/link:text-sky-300',
+    },
+    {
+      name: 'Instagram',
+      handle: 'instagram.com (Ranjith M)',
+      url: 'https://share.google/2LVUWRlKmPiylkczf',
+      icon: Instagram,
+      accent: 'hover:border-pink-500 hover:shadow-[0_0_20px_rgba(236,72,153,0.35)]',
+      iconColor: 'text-pink-400 group-hover/link:text-pink-300',
     },
   ];
 
@@ -45,7 +76,7 @@ export const ConnectionFooter = ({ onOpenContact }) => {
         <div className="glass-card rounded-3xl p-6 sm:p-10 border border-cyan-500/25 relative overflow-hidden bg-gradient-to-br from-[#071326] via-[#050B14] to-[#0A172B]">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left Column: Heading & Copy Action */}
-            <div className="lg:col-span-7 space-y-4">
+            <div className="lg:col-span-5 space-y-4">
               <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 uppercase tracking-widest">
                 <Terminal size={14} />
                 <span>COMMUNICATION_LINK :: ONLINE</span>
@@ -98,43 +129,45 @@ export const ConnectionFooter = ({ onOpenContact }) => {
               </div>
             </div>
 
-            {/* Right Column: Social Nodes */}
-            <div className="lg:col-span-5 space-y-4">
+            {/* Right Column: Social Nodes in 2x2 Bento Grid */}
+            <div className="lg:col-span-7 space-y-4">
               <span className="text-xs font-mono text-slate-400 uppercase tracking-wider block">
-                Direct Channels & Repos
+                Direct Channels & Social Nodes
               </span>
 
-              {socialLinks.map((social) => {
-                const Icon = social.icon;
-                return (
-                  <a
-                    key={social.name}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onMouseEnter={playHoverSound}
-                    onClick={playClickSound}
-                    className={`block p-4 rounded-2xl glass-panel border border-cyan-500/15 ${social.accent} transition-all duration-300 group/link`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-xl bg-space-950 border border-cyan-500/20 text-cyan-400 group-hover/link:scale-110 transition-transform">
-                          <Icon size={18} />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {socialLinks.map((social) => {
+                  const Icon = social.icon;
+                  return (
+                    <a
+                      key={social.name}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onMouseEnter={playHoverSound}
+                      onClick={playClickSound}
+                      className={`block p-4 rounded-2xl glass-panel border border-cyan-500/15 ${social.accent} transition-all duration-300 group/link`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className={`p-2.5 rounded-xl bg-space-950 border border-cyan-500/20 ${social.iconColor} group-hover/link:scale-110 transition-transform flex-shrink-0`}>
+                            <Icon size={18} />
+                          </div>
+                          <div className="min-w-0">
+                            <h4 className="text-sm font-bold text-white group-hover/link:text-cyan-300 transition-colors truncate">
+                              {social.name}
+                            </h4>
+                            <span className="text-xs font-mono text-slate-400 block truncate">
+                              {social.handle}
+                            </span>
+                          </div>
                         </div>
-                        <div>
-                          <h4 className="text-sm font-bold text-white group-hover/link:text-cyan-300 transition-colors">
-                            {social.name}
-                          </h4>
-                          <span className="text-xs font-mono text-slate-400">
-                            {social.handle}
-                          </span>
-                        </div>
+                        <ExternalLink size={16} className="text-slate-500 group-hover/link:text-cyan-400 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-all flex-shrink-0 ml-2" />
                       </div>
-                      <ExternalLink size={16} className="text-slate-500 group-hover/link:text-cyan-400 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-all" />
-                    </div>
-                  </a>
-                );
-              })}
+                    </a>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
@@ -163,4 +196,3 @@ export const ConnectionFooter = ({ onOpenContact }) => {
     </footer>
   );
 };
-

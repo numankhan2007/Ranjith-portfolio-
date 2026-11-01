@@ -20,7 +20,7 @@ Built for **RANJITH M** — Aspiring Full-Stack Developer & Open Source Contribu
    - Datheon Python Programming Internship (9.1/10 Distinction, Grade A+).
    - VGLUG OpenTamilOCR Python utilities contributor.
    - CodSoft 4-Week Core Programming Sprint.
-6. **Connection Uplink**: 1-click email copy with visual feedback toast, direct mail dispatch, and holographic links to GitHub and LinkedIn.
+6. **Connection Uplink**: 1-click email copy with visual feedback toast, direct mail dispatch, and holographic links to GitHub, LinkedIn, Twitter/X, and Instagram.
 
 ---
 
@@ -39,3 +39,4 @@ npm run build
 # Preview production build locally
 npm run preview
 ```
+
