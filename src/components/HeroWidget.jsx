@@ -72,36 +72,64 @@ export const HeroWidget = ({ onOpenContact }) => {
         </div>
       </div>
 
-      {/* Main Hero Identity */}
-      <div className="py-6 sm:py-8 space-y-4">
-        {/* Holographic Pill */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 text-xs font-mono tracking-wide">
-          <Sparkles size={13} className="text-cyan-400 animate-pulse" />
-          <span>Bento 3D Architecture • 2026 Edition</span>
-        </div>
+      {/* Main Hero Identity with Profile Photo & Details */}
+      <div className="py-6 sm:py-8 flex flex-col md:flex-row md:items-center gap-6 sm:gap-8 lg:gap-10">
+        {/* Profile Photo Avatar Node */}
+        <div 
+          className="relative flex-shrink-0 group/avatar self-start sm:self-center md:self-center"
+          onMouseEnter={playHoverSound}
+        >
+          {/* Outer Ambient Aurora Glow Halo */}
+          <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-cyan-400 via-blue-500 to-indigo-600 opacity-70 blur-md group-hover/avatar:opacity-100 group-hover/avatar:blur-lg transition-all duration-500" />
 
-        {/* Big Name with 3D Cyber Gradient */}
-        <div>
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight font-display">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-cyan-400 drop-shadow-[0_0_25px_rgba(0,240,255,0.3)]">
-              RANJITH M
-            </span>
-          </h1>
-          
-          {/* Cyber Glitch Text Role */}
-          <div className="mt-2 min-h-[32px] flex items-center">
-            <p className="font-mono text-sm sm:text-base md:text-lg text-cyan-400 font-medium tracking-wide flex items-center gap-1">
-              <span className="text-cyan-500">&gt;</span>
-              <span>{glitchText}</span>
-              <span className="w-2 h-4 bg-cyan-400 inline-block animate-pulse ml-0.5" />
-            </p>
+          {/* Futuristic Profile Image Container */}
+          <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 lg:w-40 lg:h-40 rounded-full p-[3px] bg-gradient-to-tr from-cyan-400 via-blue-500 to-cyan-300 ring-2 ring-[#00F0FF] shadow-[0_0_20px_rgba(0,240,255,0.6)] hover:scale-105 transition-transform duration-300 cursor-pointer overflow-hidden bg-space-950">
+            <img
+              src="/profile.png"
+              alt="RANJITH M"
+              className="w-full h-full object-cover rounded-full select-none"
+              loading="eager"
+            />
+          </div>
+
+          {/* Live Cyber Status Indicator Dot */}
+          <div className="absolute bottom-1 right-1 sm:bottom-2 sm:right-2 flex h-4 w-4">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-4 w-4 bg-cyan-400 border-2 border-[#050B14] shadow-[0_0_8px_#00F0FF]"></span>
           </div>
         </div>
 
-        {/* Bio */}
-        <p className="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl font-light">
-          B.Sc. Computer Science student crafting scalable web applications, robust backends, and contributing to AI-driven open-source pipelines.
-        </p>
+        {/* Text Details */}
+        <div className="space-y-4 flex-1">
+          {/* Holographic Pill */}
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 text-xs font-mono tracking-wide">
+            <Sparkles size={13} className="text-cyan-400 animate-pulse" />
+            <span>Bento 3D Architecture • 2026 Edition</span>
+          </div>
+
+          {/* Big Name with 3D Cyber Gradient */}
+          <div>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight font-display">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-cyan-400 drop-shadow-[0_0_25px_rgba(0,240,255,0.3)]">
+                RANJITH M
+              </span>
+            </h1>
+            
+            {/* Cyber Glitch Text Role */}
+            <div className="mt-2 min-h-[32px] flex items-center">
+              <p className="font-mono text-sm sm:text-base md:text-lg text-cyan-400 font-medium tracking-wide flex items-center gap-1">
+                <span className="text-cyan-500">&gt;</span>
+                <span>{glitchText}</span>
+                <span className="w-2 h-4 bg-cyan-400 inline-block animate-pulse ml-0.5" />
+              </p>
+            </div>
+          </div>
+
+          {/* Bio */}
+          <p className="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl font-light">
+            B.Sc. Computer Science student crafting scalable web applications, robust backends, and contributing to AI-driven open-source pipelines.
+          </p>
+        </div>
       </div>
 
       {/* Micro-Interaction CTA Buttons */}
@@ -141,4 +169,3 @@ export const HeroWidget = ({ onOpenContact }) => {
     </div>
   );
 };
-
