@@ -7,51 +7,39 @@ export default {
   theme: {
     extend: {
       colors: {
-        space: {
-          950: '#03070E',
-          900: '#050B14', // Core deep space background requested
-          850: '#07101F',
-          800: '#0A172B',
-          700: '#0F2342',
-          card: 'rgba(7, 16, 31, 0.65)',
-          border: 'rgba(0, 240, 255, 0.15)',
+        dark: {
+          950: '#000000',
+          900: '#0A0A0A', // Deep solid black
+          850: '#111111',
+          800: '#171717',
+          700: '#262626',
         },
-        aurora: {
-          cyan: '#00F0FF',
-          blue: '#0070F3',
-          purple: '#7928CA',
-          neon: '#00FF9D',
+        royal: {
+          light: '#3B82F6',
+          DEFAULT: '#2563EB', // Primary Royal Blue requested
+          dark: '#1D4ED8',
+          deep: '#1E40AF',
+        },
+        gold: {
+          light: '#FDE68A',
+          DEFAULT: '#FBBF24', // Metallic Gold requested
+          metallic: '#FFD700',
+          dark: '#D97706',
+          deep: '#B45309',
         }
       },
       fontFamily: {
-        sans: ['"Space Grotesk"', 'Inter', 'sans-serif'],
+        sans: ['Inter', 'sans-serif'],
+        heading: ['Outfit', '"Space Grotesk"', 'sans-serif'],
+        display: ['Outfit', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'monospace'],
-        display: ['"Space Grotesk"', 'sans-serif'],
       },
       animation: {
-        'aurora-slow': 'aurora 18s ease-in-out infinite alternate',
-        'aurora-reverse': 'aurora-rev 22s ease-in-out infinite alternate',
-        'pulse-glow': 'pulseGlow 3s ease-in-out infinite',
-        'marquee-left': 'marqueeLeft 35s linear infinite',
-        'marquee-right': 'marqueeRight 35s linear infinite',
-        'glitch': 'glitch 4s infinite',
-        'float': 'float 6s ease-in-out infinite',
+        'marquee-left': 'marqueeLeft 40s linear infinite',
+        'marquee-right': 'marqueeRight 40s linear infinite',
+        'pulse-subtle': 'pulseSubtle 4s ease-in-out infinite',
       },
       keyframes: {
-        aurora: {
-          '0%': { transform: 'translate(0px, 0px) scale(1)' },
-          '50%': { transform: 'translate(40px, -60px) scale(1.15)' },
-          '100%': { transform: 'translate(-30px, 40px) scale(0.95)' },
-        },
-        'aurora-rev': {
-          '0%': { transform: 'translate(0px, 0px) scale(1)' },
-          '50%': { transform: 'translate(-50px, 40px) scale(1.2)' },
-          '100%': { transform: 'translate(30px, -30px) scale(0.9)' },
-        },
-        pulseGlow: {
-          '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
-          '50%': { opacity: '0.8', transform: 'scale(1.05)' },
-        },
         marqueeLeft: {
           '0%': { transform: 'translateX(0%)' },
           '100%': { transform: 'translateX(-50%)' },
@@ -60,19 +48,18 @@ export default {
           '0%': { transform: 'translateX(-50%)' },
           '100%': { transform: 'translateX(0%)' },
         },
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-10px)' },
+        pulseSubtle: {
+          '0%, 100%': { opacity: '0.25', transform: 'scale(1)' },
+          '50%': { opacity: '0.45', transform: 'scale(1.05)' },
         }
       },
       boxShadow: {
-        'neon-cyan': '0 0 25px -3px rgba(0, 240, 255, 0.4), 0 0 10px -2px rgba(0, 240, 255, 0.3)',
-        'neon-blue': '0 0 25px -3px rgba(0, 112, 243, 0.4), 0 0 10px -2px rgba(0, 112, 243, 0.3)',
-        'card-glow': '0 8px 32px 0 rgba(0, 240, 255, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.08)',
-        'card-hover': '0 12px 40px -5px rgba(0, 240, 255, 0.25), inset 0 0 0 1px rgba(0, 240, 255, 0.4)',
+        'royal-glow': '0 0 25px -3px rgba(37, 99, 235, 0.45)',
+        'gold-glow': '0 0 25px -3px rgba(251, 191, 36, 0.4)',
+        'card-clean': '0 8px 30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08)',
+        'card-hover': '0 14px 40px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(251, 191, 36, 0.25)',
       }
     },
   },
   plugins: [],
 }
-

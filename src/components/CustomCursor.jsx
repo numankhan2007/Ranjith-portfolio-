@@ -15,7 +15,6 @@ export const CustomCursor = () => {
   const ringY = useSpring(0, { damping: 18, stiffness: 180 });
 
   useEffect(() => {
-    // Check for touch screens
     if (window.matchMedia('(pointer: coarse)').matches) {
       setIsTouchDevice(true);
       return;
@@ -70,7 +69,7 @@ export const CustomCursor = () => {
 
   return (
     <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden">
-      {/* Outer Glow Halo Ring */}
+      {/* Outer Halo Ring - Royal Blue / Gold on hover */}
       <motion.div
         style={{
           x: ringX,
@@ -79,18 +78,18 @@ export const CustomCursor = () => {
           translateY: '-50%',
         }}
         animate={{
-          scale: isClicked ? 0.75 : isHovered ? 1.8 : 1,
-          borderColor: isHovered ? '#00F0FF' : 'rgba(0, 240, 255, 0.45)',
-          backgroundColor: isHovered ? 'rgba(0, 240, 255, 0.08)' : 'transparent',
+          scale: isClicked ? 0.8 : isHovered ? 1.7 : 1,
+          borderColor: isHovered ? '#FBBF24' : 'rgba(37, 99, 235, 0.5)',
+          backgroundColor: isHovered ? 'rgba(251, 191, 36, 0.08)' : 'transparent',
           boxShadow: isHovered
-            ? '0 0 25px rgba(0, 240, 255, 0.6), inset 0 0 15px rgba(0, 240, 255, 0.3)'
-            : '0 0 10px rgba(0, 112, 243, 0.25)',
+            ? '0 0 20px rgba(251, 191, 36, 0.5)'
+            : '0 0 10px rgba(37, 99, 235, 0.25)',
         }}
         transition={{ type: 'spring', damping: 20, stiffness: 300, mass: 0.5 }}
-        className="fixed top-0 left-0 w-8 h-8 rounded-full border border-cyan-400/50 backdrop-blur-[1px]"
+        className="fixed top-0 left-0 w-8 h-8 rounded-full border border-blue-500/40 backdrop-blur-[1px]"
       />
 
-      {/* Inner Neon Dot */}
+      {/* Inner Dot - Metallic Gold */}
       <motion.div
         style={{
           x: cursorX,
@@ -99,13 +98,12 @@ export const CustomCursor = () => {
           translateY: '-50%',
         }}
         animate={{
-          scale: isClicked ? 1.6 : isHovered ? 0.4 : 1,
-          backgroundColor: isHovered ? '#00F0FF' : '#00F0FF',
+          scale: isClicked ? 1.5 : isHovered ? 0.5 : 1,
+          backgroundColor: isHovered ? '#FBBF24' : '#60A5FA',
         }}
         transition={{ type: 'spring', damping: 25, stiffness: 450 }}
-        className="fixed top-0 left-0 w-2 h-2 rounded-full shadow-[0_0_8px_#00F0FF]"
+        className="fixed top-0 left-0 w-2 h-2 rounded-full shadow-[0_0_8px_#FBBF24]"
       />
     </div>
   );
 };
-

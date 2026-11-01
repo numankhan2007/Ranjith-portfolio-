@@ -16,26 +16,26 @@ export function App() {
   const [isContactOpen, setIsContactOpen] = useState(false);
 
   return (
-    <div className="relative min-h-screen bg-[#050B14] text-slate-100 overflow-x-hidden selection:bg-cyan-400 selection:text-black">
-      {/* Custom Futuristic Expanding Cursor */}
+    <div className="relative min-h-screen bg-[#0A0A0A] text-slate-100 overflow-x-hidden selection:bg-blue-600 selection:text-white">
+      {/* Custom High-Performance Cursor */}
       <CustomCursor />
 
-      {/* Deep Space Fluid Aurora Background */}
+      {/* Deep Solid Black Background with Ambient Lighting */}
       <BackgroundAurora />
 
-      {/* Floating Glass Dock Navbar */}
+      {/* Modern Glass Dock Navbar */}
       <Navbar onOpenContact={() => setIsContactOpen(true)} />
 
-      {/* Main Bento Grid Hub */}
-      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-16 space-y-10 sm:space-y-12">
-        {/* Section 1: Hero & High Impact Bento Widget */}
-        <section id="hero" className="space-y-6">
+      {/* Main Container with Massive Whitespace & Breathable Separation */}
+      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-24 space-y-24 sm:space-y-28 md:space-y-32">
+        {/* Section 1: Hero & High Impact Metrics */}
+        <section id="hero" className="space-y-8">
           <HeroWidget onOpenContact={() => setIsContactOpen(true)} />
           <LiveStatsWidget />
         </section>
 
-        {/* Section 2: Tech Stack & Experience Bento Layout */}
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        {/* Section 2: Technical Repertoire & Cyber-Timeline */}
+        <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           <div className="lg:col-span-5 flex flex-col">
             <TechStackWidget />
           </div>
@@ -44,17 +44,17 @@ export function App() {
           </div>
         </section>
 
-        {/* Section 3: Projects (Hover-Reveal Bento Cards) */}
+        {/* Section 3: Featured Projects */}
         <section>
           <ProjectsWidget />
         </section>
 
-        {/* Section 4: Dynamic Certifications (Endless 3D Perspective Marquee) */}
+        {/* Section 4: Live Scrolling Certificates (Seamless Infinite Marquee) */}
         <section>
           <CertificationsMarquee />
         </section>
 
-        {/* Section 5: Education Widget */}
+        {/* Section 5: Academic Track */}
         <section>
           <EducationWidget />
         </section>
@@ -73,4 +73,3 @@ export function App() {
 }
 
 export default App;
-

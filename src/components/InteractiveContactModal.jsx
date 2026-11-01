@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Send, X, Terminal, CheckCircle2, Copy } from 'lucide-react';
+import { Mail, Send, X, Terminal, CheckCircle2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { playClickSound, playHoverSound } from '../utils/sound';
 
@@ -16,15 +16,13 @@ export const InteractiveContactModal = ({ isOpen, onClose }) => {
     e.preventDefault();
     playClickSound();
     
-    // Trigger celebration confetti
     confetti({
       particleCount: 70,
       spread: 60,
       origin: { y: 0.6 },
-      colors: ['#00F0FF', '#0070F3', '#7928CA'],
+      colors: ['#2563EB', '#FBBF24', '#3B82F6'],
     });
 
-    // Create mailto fallback link to guarantee email transmission
     const mailtoUrl = `mailto:${targetEmail}?subject=Portfolio Inquiry from ${encodeURIComponent(name || 'Visitor')}&body=${encodeURIComponent(
       `Name: ${name}\nEmail: ${senderEmail}\n\nMessage:\n${message}`
     )}`;
@@ -44,28 +42,28 @@ export const InteractiveContactModal = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fadeIn"
       onClick={handleClose}
     >
       <div
-        className="glass-card max-w-lg w-full rounded-3xl p-6 sm:p-8 border border-cyan-400/50 bg-[#071326] shadow-[0_0_60px_rgba(0,240,255,0.35)] relative overflow-hidden"
+        className="glass-card max-w-lg w-full rounded-3xl p-7 sm:p-9 border border-white/15 bg-[#141414] shadow-2xl relative overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Ambient glow in modal */}
-        <div className="absolute -top-20 -right-20 w-44 h-44 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none" />
+        {/* Subtle ambient glow in modal */}
+        <div className="absolute -top-20 -right-20 w-48 h-48 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
 
         {/* Modal Header */}
-        <div className="flex items-center justify-between pb-4 mb-4 border-b border-cyan-500/20">
+        <div className="flex items-center justify-between pb-4 mb-5 border-b border-white/10">
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#00F0FF]" />
-            <span className="font-mono text-xs text-cyan-300 tracking-wider">
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" />
+            <span className="font-mono text-xs text-amber-300 tracking-wider">
               COMMUNICATION_UPLINK
             </span>
           </div>
           <button
             onClick={handleClose}
             onMouseEnter={playHoverSound}
-            className="p-1.5 rounded-xl bg-space-850 hover:bg-space-800 text-slate-400 hover:text-white transition-colors cursor-pointer"
+            className="p-1.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] text-slate-400 hover:text-white transition-colors cursor-pointer"
           >
             <X size={18} />
           </button>
@@ -73,18 +71,18 @@ export const InteractiveContactModal = ({ isOpen, onClose }) => {
 
         {submitted ? (
           <div className="py-8 text-center space-y-4">
-            <div className="w-16 h-16 rounded-full bg-cyan-500/10 border border-cyan-400/40 text-cyan-300 flex items-center justify-center mx-auto shadow-[0_0_25px_rgba(0,240,255,0.4)]">
+            <div className="w-16 h-16 rounded-full bg-blue-600/10 border border-blue-500/40 text-blue-400 flex items-center justify-center mx-auto shadow-[0_0_25px_rgba(37,99,235,0.4)]">
               <CheckCircle2 size={32} />
             </div>
-            <h3 className="text-2xl font-bold font-display text-white">
+            <h3 className="text-2xl font-bold font-heading text-white">
               Transmission Initiated
             </h3>
-            <p className="text-sm text-slate-300 max-w-sm mx-auto font-light">
-              Your default email client has been summoned with pre-formatted transmission details addressed to <span className="font-mono text-cyan-300">{targetEmail}</span>.
+            <p className="text-sm text-slate-300 max-w-sm mx-auto font-light leading-relaxed">
+              Your default email client has been summoned with pre-formatted transmission details addressed to <span className="font-mono text-amber-300">{targetEmail}</span>.
             </p>
             <button
               onClick={handleClose}
-              className="mt-4 px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-600 text-black font-semibold text-xs font-mono shadow-[0_0_15px_rgba(0,240,255,0.4)]"
+              className="mt-4 px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs font-heading shadow-[0_0_15px_rgba(37,99,235,0.4)] cursor-pointer"
             >
               Close Uplink
             </button>
@@ -92,7 +90,7 @@ export const InteractiveContactModal = ({ isOpen, onClose }) => {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-mono text-cyan-400 mb-1.5">
+              <label className="block text-xs font-mono text-amber-400 mb-1.5">
                 IDENTITY // NAME
               </label>
               <input
@@ -101,12 +99,12 @@ export const InteractiveContactModal = ({ isOpen, onClose }) => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="e.g. Sarah Connor"
-                className="w-full px-4 py-2.5 rounded-xl bg-space-950/80 border border-cyan-500/20 focus:border-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-400 text-slate-100 text-sm font-sans placeholder:text-slate-600"
+                className="w-full px-4 py-3 rounded-xl bg-[#0A0A0A] border border-white/10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-slate-100 text-sm font-sans placeholder:text-slate-600"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-mono text-cyan-400 mb-1.5">
+              <label className="block text-xs font-mono text-amber-400 mb-1.5">
                 RETURN ADDRESS // EMAIL
               </label>
               <input
@@ -115,12 +113,12 @@ export const InteractiveContactModal = ({ isOpen, onClose }) => {
                 value={senderEmail}
                 onChange={(e) => setSenderEmail(e.target.value)}
                 placeholder="e.g. sarah@cyberdyne.io"
-                className="w-full px-4 py-2.5 rounded-xl bg-space-950/80 border border-cyan-500/20 focus:border-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-400 text-slate-100 text-sm font-sans placeholder:text-slate-600"
+                className="w-full px-4 py-3 rounded-xl bg-[#0A0A0A] border border-white/10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-slate-100 text-sm font-sans placeholder:text-slate-600"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-mono text-cyan-400 mb-1.5">
+              <label className="block text-xs font-mono text-amber-400 mb-1.5">
                 PAYLOAD // MESSAGE
               </label>
               <textarea
@@ -129,7 +127,7 @@ export const InteractiveContactModal = ({ isOpen, onClose }) => {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Describe project, opportunity, or collaboration details..."
-                className="w-full px-4 py-2.5 rounded-xl bg-space-950/80 border border-cyan-500/20 focus:border-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-400 text-slate-100 text-sm font-sans placeholder:text-slate-600 resize-none"
+                className="w-full px-4 py-3 rounded-xl bg-[#0A0A0A] border border-white/10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 text-slate-100 text-sm font-sans placeholder:text-slate-600 resize-none"
               />
             </div>
 
@@ -137,7 +135,7 @@ export const InteractiveContactModal = ({ isOpen, onClose }) => {
               <button
                 type="submit"
                 onMouseEnter={playHoverSound}
-                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 via-cyan-500 to-blue-600 text-black font-semibold text-sm font-mono tracking-wider flex items-center justify-center gap-2 shadow-[0_0_25px_rgba(0,240,255,0.5)] hover:shadow-[0_0_35px_rgba(0,240,255,0.8)] transition-all cursor-pointer"
+                className="w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm font-heading tracking-wide flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:shadow-[0_0_30px_rgba(37,99,235,0.6)] transition-all cursor-pointer"
               >
                 <Send size={15} />
                 <span>Transmit Signal</span>
@@ -149,4 +147,3 @@ export const InteractiveContactModal = ({ isOpen, onClose }) => {
     </div>
   );
 };
-

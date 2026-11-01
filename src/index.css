@@ -4,7 +4,7 @@
 
 @layer base {
   * {
-    border-color: rgba(0, 240, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.1);
   }
   
   html {
@@ -12,105 +12,75 @@
   }
 
   body {
-    background-color: #050B14;
-    color: #F1F5F9;
-    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #0A0A0A;
+    color: #F8FAFC;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     overflow-x: hidden;
   }
 
-  /* Custom Cyber Scrollbar */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', 'Space Grotesk', sans-serif;
+  }
+
+  /* Sleek Royal-Gold Scrollbar */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
 
   ::-webkit-scrollbar-track {
-    background: #03070E;
+    background: #000000;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #00F0FF, #0070F3);
+    background: linear-gradient(180deg, #2563EB, #FBBF24);
     border-radius: 9999px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #00F0FF;
-    box-shadow: 0 0 10px #00F0FF;
+    background: #FBBF24;
   }
 }
 
-/* Glassmorphism & Cyber Card Effects */
+/* Dark Glassmorphism Cards with Crisp Borders */
 .glass-panel {
-  background: rgba(7, 16, 31, 0.65);
+  background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(0, 240, 255, 0.14);
-  box-shadow: 0 8px 32px 0 rgba(0, 10, 25, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .glass-card {
-  background: linear-gradient(135deg, rgba(10, 23, 43, 0.7) 0%, rgba(5, 11, 20, 0.85) 100%);
+  background: rgba(20, 20, 20, 0.7);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 240, 255, 0.12);
-  position: relative;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card:hover {
-  border-color: rgba(0, 240, 255, 0.45);
-  box-shadow: 0 15px 40px -10px rgba(0, 240, 255, 0.18), 0 0 20px -3px rgba(0, 112, 243, 0.25);
+  border-color: rgba(251, 191, 36, 0.35);
+  box-shadow: 0 12px 35px -8px rgba(0, 0, 0, 0.8), 0 0 20px -3px rgba(37, 99, 235, 0.2);
 }
 
-/* Cyber Grid Background Pattern */
-.bg-grid-cyber {
-  background-size: 40px 40px;
-  background-image: 
-    linear-gradient(to right, rgba(0, 240, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
+/* Subtle dot matrix pattern for modern tech look */
+.bg-tech-dots {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 32px 32px;
 }
 
-.bg-radial-vignette {
-  background: radial-gradient(circle at 50% 50%, transparent 40%, #050B14 90%);
+/* Gold text gradient */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #FEF08A 0%, #FBBF24 50%, #D97706 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-/* 3D Perspective Utils */
-.perspective-container {
-  perspective: 1200px;
-  transform-style: preserve-3d;
+.text-gold-glow {
+  text-shadow: 0 0 20px rgba(251, 191, 36, 0.35);
 }
 
-.marquee-3d-track {
-  transform: rotateX(8deg) rotateZ(-1.5deg) translateZ(0);
-  transform-origin: center center;
+/* Royal blue glow */
+.shadow-royal {
+  box-shadow: 0 0 25px rgba(37, 99, 235, 0.4);
 }
-
-/* Glowing text */
-.text-glow-cyan {
-  text-shadow: 0 0 12px rgba(0, 240, 255, 0.7), 0 0 25px rgba(0, 240, 255, 0.4);
-}
-
-.text-glow-blue {
-  text-shadow: 0 0 12px rgba(0, 112, 243, 0.8), 0 0 25px rgba(0, 112, 243, 0.5);
-}
-
-/* Neon Borders */
-.border-glow-cyan {
-  border-color: #00F0FF;
-  box-shadow: 0 0 15px rgba(0, 240, 255, 0.35);
-}
-
-/* Hologram scanline effect */
-.scanlines {
-  background: linear-gradient(
-    rgba(18, 16, 16, 0) 50%, 
-    rgba(0, 240, 255, 0.025) 50%
-  ), linear-gradient(
-    90deg,
-    rgba(255, 0, 0, 0.02),
-    rgba(0, 255, 0, 0.01),
-    rgba(0, 0, 255, 0.02)
-  );
-  background-size: 100% 4px, 6px 100%;
-}
-

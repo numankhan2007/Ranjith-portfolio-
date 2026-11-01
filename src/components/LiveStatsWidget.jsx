@@ -1,5 +1,5 @@
 import React from 'react';
-import { Award, GitPullRequest, ShieldCheck, Zap } from 'lucide-react';
+import { Award, GitPullRequest, ShieldCheck } from 'lucide-react';
 import { playHoverSound } from '../utils/sound';
 
 export const LiveStatsWidget = () => {
@@ -10,62 +10,65 @@ export const LiveStatsWidget = () => {
       highlight: 'Grade A+ Distinction',
       sub: 'Datheon Python Programming',
       icon: Award,
-      color: 'from-amber-400 to-yellow-500',
-      badgeColor: 'text-amber-300 border-amber-500/30 bg-amber-500/10',
+      accentBorder: 'group-hover:border-amber-400/50',
+      badgeClass: 'text-amber-400 border-amber-400/30 bg-amber-400/10',
+      iconColor: 'text-amber-400',
     },
     {
       label: 'Open Source',
       value: 'Tamil OCR',
       highlight: 'VGLUG Contributor',
-      sub: 'Python Preprocessing Utilities',
+      sub: 'Python Preprocessing Pipelines',
       icon: GitPullRequest,
-      color: 'from-cyan-400 to-blue-500',
-      badgeColor: 'text-cyan-300 border-cyan-500/30 bg-cyan-500/10',
+      accentBorder: 'group-hover:border-blue-500/50',
+      badgeClass: 'text-blue-400 border-blue-500/30 bg-blue-500/10',
+      iconColor: 'text-blue-400',
     },
     {
       label: 'Specialized Badges',
       value: '7 Certs',
       highlight: 'Nasscom, IBM, Kaggle',
-      sub: 'GenAI, Python & Web',
+      sub: 'Generative AI & Cloud',
       icon: ShieldCheck,
-      color: 'from-blue-400 to-indigo-500',
-      badgeColor: 'text-blue-300 border-blue-500/30 bg-blue-500/10',
+      accentBorder: 'group-hover:border-blue-500/50',
+      badgeClass: 'text-blue-300 border-blue-500/30 bg-blue-500/10',
+      iconColor: 'text-blue-400',
     },
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
       {stats.map((stat, idx) => {
         const Icon = stat.icon;
         return (
           <div
             key={idx}
             onMouseEnter={playHoverSound}
-            className="glass-card rounded-2xl p-5 border border-cyan-500/15 relative overflow-hidden group hover:border-cyan-400/40 transition-all"
+            className={`glass-card rounded-2xl p-6 sm:p-7 border border-white/10 bg-white/[0.03] relative overflow-hidden group ${stat.accentBorder} transition-all duration-300 shadow-xl`}
           >
-            {/* Top ambient glow on hover */}
-            <div className="absolute -top-12 -right-12 w-28 h-28 bg-cyan-500/10 rounded-full blur-2xl group-hover:bg-cyan-500/20 transition-all pointer-events-none" />
+            {/* Top ambient glow */}
+            <div className="absolute -top-12 -right-12 w-28 h-28 bg-white/5 rounded-full blur-2xl group-hover:bg-amber-400/10 transition-all pointer-events-none" />
 
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-mono uppercase tracking-wider text-slate-400">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-xs font-mono uppercase tracking-widest text-slate-400">
                 {stat.label}
               </span>
-              <div className="p-2 rounded-xl bg-space-850 border border-white/5 text-cyan-400 group-hover:scale-110 group-hover:border-cyan-400/30 transition-all">
-                <Icon size={16} />
+              <div className={`p-2.5 rounded-xl bg-white/[0.05] border border-white/10 ${stat.iconColor} group-hover:scale-110 transition-all`}>
+                <Icon size={18} />
               </div>
             </div>
 
-            <div className="text-2xl sm:text-3xl font-extrabold font-mono text-white tracking-tight">
+            <div className="text-3xl sm:text-4xl font-extrabold font-heading text-white tracking-tight">
               {stat.value}
             </div>
 
-            <div className="mt-2 flex items-center gap-1.5">
-              <span className={`inline-block px-2 py-0.5 rounded-md text-[11px] font-mono border ${stat.badgeColor}`}>
+            <div className="mt-3 flex items-center gap-1.5">
+              <span className={`inline-block px-2.5 py-1 rounded-lg text-xs font-mono font-medium border ${stat.badgeClass}`}>
                 {stat.highlight}
               </span>
             </div>
 
-            <p className="mt-2 text-xs text-slate-400 line-clamp-1">
+            <p className="mt-2.5 text-xs text-slate-400 line-clamp-1 font-light">
               {stat.sub}
             </p>
           </div>
@@ -74,4 +77,3 @@ export const LiveStatsWidget = () => {
     </div>
   );
 };
-
