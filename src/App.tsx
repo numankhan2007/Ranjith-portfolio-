@@ -34,8 +34,62 @@ const projectEvidence = [
 const skillConnections = [[0,5],[0,9],[0,10],[0,11],[0,12],[1,2],[1,5],[1,6],[1,7],[1,8],[2,10],[3,4],[3,5],[3,6],[3,7],[4,5],[4,6],[5,6],[5,7],[6,7],[7,8],[8,11],[8,12],[9,10],[9,11],[10,11],[10,12],[11,12],[12,15],[13,14],[13,15],[1,13],[0,13]];
 const mobileSkillPositions = [[18,9],[50,9],[82,9],[18,25],[50,25],[82,25],[18,41],[50,41],[82,41],[18,57],[50,57],[82,57],[18,73],[50,73],[82,73],[50,89]].map(([x,y]) => ({x,y}));
 const desktopSkillPositions = skillNodes.map(({x,y}) => ({x,y}));
+type SkillPosition = { x: number; y: number };
+type SkillDragState = {
+  index: number;
+  pointerId: number;
+  startX: number;
+  startY: number;
+  startPositions: SkillPosition[];
+  neighbours: Record<number, SkillPosition>;
+  pendingPointer: { x: number; y: number } | null;
+  frameId: number | null;
+};
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
-const getDefaultSkillPositions = () => (typeof window !== 'undefined' && window.matchMedia('(max-width: 700px)').matches ? mobileSkillPositions : desktopSkillPositions).map(point => ({ ...point }));
+const getDefaultSkillPositions = (): SkillPosition[] => (typeof window !== 'undefined' && window.matchMedia('(max-width: 700px)').matches ? mobileSkillPositions : desktopSkillPositions).map(point => ({ ...point }));
+const getSkillConnectionPath = (positions: SkillPosition[], a: number, b: number, index: number) => {
+  const p = positions[a], q = positions[b];
+  const dx = q.x - p.x, dy = q.y - p.y, len = Math.max(1, Math.hypot(dx, dy));
+  const sway = ((index % 5) - 2) * 1.4;
+  const cx = (p.x + q.x) / 2 - (dy / len) * sway;
+  const cy = (p.y + q.y) / 2 + (dx / len) * sway + Math.min(5, len * .055);
+  return `M ${p.x} ${p.y} Q ${cx} ${cy} ${q.x} ${q.y}`;
+};
+const getDraggedSkillPositions = (drag: SkillDragState, clientX: number, clientY: number, rect: DOMRect): SkillPosition[] => {
+  const x = clamp((clientX - rect.left) / rect.width * 100, 4, 96);
+  const y = clamp((clientY - rect.top) / rect.height * 100, 5, 95);
+  const dx = (clientX - drag.startX) / rect.width * 100;
+  const dy = (clientY - drag.startY) / rect.height * 100;
+  const next = drag.startPositions.map(point => ({ ...point }));
+  next[drag.index] = { x, y };
+  Object.entries(drag.neighbours).forEach(([key, origin]) => {
+    const neighbour = Number(key);
+    next[neighbour] = { x: clamp(origin.x + dx * .13, 3, 97), y: clamp(origin.y + dy * .13, 4, 96) };
+  });
+  return next;
+};
+const syncSkillPositionsToDom = (canvas: HTMLDivElement, positions: SkillPosition[]) => {
+  canvas.querySelectorAll<HTMLButtonElement>('.evidence-node').forEach((node, index) => {
+    const point = positions[index];
+    if (!point) return;
+    node.style.left = point.x + '%';
+    node.style.top = point.y + '%';
+    node.style.setProperty('--node-x', point.x + '%');
+    node.style.setProperty('--node-y', point.y + '%');
+  });
+  canvas.querySelectorAll<SVGGElement>('.network-lines g').forEach((group, index) => {
+    const connection = skillConnections[index];
+    if (!connection) return;
+    const path = getSkillConnectionPath(positions, connection[0], connection[1], index);
+    group.querySelectorAll<SVGPathElement>('path').forEach(element => element.setAttribute('d', path));
+  });
+  canvas.querySelectorAll<SVGCircleElement>('.thread-junction').forEach((circle, index) => {
+    const point = positions[index];
+    if (!point) return;
+    circle.setAttribute('cx', String(point.x));
+    circle.setAttribute('cy', String(point.y));
+  });
+};
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -44,7 +98,7 @@ function App() {
   const [skillPositions, setSkillPositions] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 700px)').matches ? mobileSkillPositions : desktopSkillPositions);
   const [draggingSkill, setDraggingSkill] = useState<number | null>(null);
   const networkRef = useRef<HTMLDivElement>(null);
-  const dragRef = useRef<{ index:number; pointerId:number; startX:number; startY:number; lastX:number; lastY:number; neighbours:Record<number,{x:number;y:number}> } | null>(null);
+  const dragRef = useRef<SkillDragState | null>(null);
   const snapbackTimerRef = useRef<number | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
@@ -66,6 +120,9 @@ function App() {
     return () => {
       window.removeEventListener('resize', updateLayout);
       if (snapbackTimerRef.current !== null) window.clearTimeout(snapbackTimerRef.current);
+      if (dragRef.current && dragRef.current.frameId !== null) {
+        window.cancelAnimationFrame(dragRef.current.frameId);
+      }
     };
   }, []);
   const beginSkillDrag = (index:number, event:React.PointerEvent<HTMLButtonElement>) => {
@@ -77,41 +134,58 @@ function App() {
     event.preventDefault();
     event.currentTarget.setPointerCapture(event.pointerId);
     const neighbours = Object.fromEntries(skillConnections.flatMap(([a,b]) => a === index ? [[b,{...skillPositions[b]}]] : b === index ? [[a,{...skillPositions[a]}]] : []));
-    dragRef.current = {index,pointerId:event.pointerId,startX:event.clientX,startY:event.clientY,lastX:event.clientX,lastY:event.clientY,neighbours};
+    dragRef.current = {
+      index,
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      startPositions: skillPositions.map(point => ({ ...point })),
+      neighbours,
+      pendingPointer: null,
+      frameId: null
+    };
     setDraggingSkill(index);
     setSelectedSkill(index);
   };
   const moveSkillDrag = (event:React.PointerEvent<HTMLDivElement>) => {
     const drag = dragRef.current;
-    const canvas = networkRef.current;
-    if (!drag || !canvas || event.pointerId !== drag.pointerId) return;
-    const rect = canvas.getBoundingClientRect();
-    const x = clamp((event.clientX - rect.left) / rect.width * 100, 4, 96);
-    const y = clamp((event.clientY - rect.top) / rect.height * 100, 5, 95);
-    const dx = (event.clientX - drag.startX) / rect.width * 100;
-    const dy = (event.clientY - drag.startY) / rect.height * 100;
-    drag.lastX = event.clientX; drag.lastY = event.clientY;
-    setSkillPositions(previous => {
-      const next = previous.map(point => ({...point}));
-      next[drag.index] = {x,y};
-      Object.entries(drag.neighbours).forEach(([key,origin]) => {
-        const neighbour = Number(key);
-        next[neighbour] = {x:clamp(origin.x + dx * .13,3,97),y:clamp(origin.y + dy * .13,4,96)};
-      });
-      return next;
+    if (!drag || event.pointerId !== drag.pointerId) return;
+    drag.pendingPointer = { x: event.clientX, y: event.clientY };
+    if (drag.frameId !== null) return;
+
+    // Coalesce pointer events to one direct DOM update per animation frame.
+    drag.frameId = window.requestAnimationFrame(() => {
+      drag.frameId = null;
+      const canvas = networkRef.current;
+      const pointer = drag.pendingPointer;
+      if (dragRef.current !== drag || !canvas || !pointer) return;
+      drag.pendingPointer = null;
+      const rect = canvas.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      const next = getDraggedSkillPositions(drag, pointer.x, pointer.y, rect);
+      syncSkillPositionsToDom(canvas, next);
     });
   };
   const finishSkillDrag = (event:React.PointerEvent<HTMLElement>) => {
     const drag = dragRef.current;
     if (!drag || event.pointerId !== drag.pointerId) return;
+    if (drag.frameId !== null) window.cancelAnimationFrame(drag.frameId);
+    drag.frameId = null;
+    const canvas = networkRef.current;
+    const rect = canvas?.getBoundingClientRect();
+    const finalPositions = canvas && rect && rect.width && rect.height
+      ? getDraggedSkillPositions(drag, event.clientX, event.clientY, rect)
+      : drag.startPositions;
+    if (canvas) syncSkillPositionsToDom(canvas, finalPositions);
     dragRef.current = null;
     setDraggingSkill(null);
+    setSkillPositions(finalPositions);
 
-    // Leave the whole evidence cluster where it was dropped for three seconds.
-    // Then return every node to its responsive desktop/mobile home position.
+    // Restore every node and clear all trace styling after the three-second hold.
     if (snapbackTimerRef.current !== null) window.clearTimeout(snapbackTimerRef.current);
     snapbackTimerRef.current = window.setTimeout(() => {
       setSkillPositions(getDefaultSkillPositions());
+      setSelectedSkill(null);
       snapbackTimerRef.current = null;
     }, 3000);
   };
@@ -119,6 +193,7 @@ function App() {
   const cancelSkillDrag = (pointerId:number) => {
     const drag = dragRef.current;
     if (!drag || drag.pointerId !== pointerId) return;
+    if (drag.frameId !== null) window.cancelAnimationFrame(drag.frameId);
     dragRef.current = null;
     setDraggingSkill(null);
     if (snapbackTimerRef.current !== null) {
@@ -126,6 +201,7 @@ function App() {
       snapbackTimerRef.current = null;
     }
     setSkillPositions(getDefaultSkillPositions());
+    setSelectedSkill(null);
   };
   useEffect(() => {
     if (activeCert === null) return;
