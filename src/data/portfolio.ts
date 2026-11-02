@@ -5,6 +5,7 @@ export const profile = {
   email: 'ranjithmuthu2407@gmail.com',
   github: 'https://github.com/ranjithmuthu2407-ux',
   linkedin: 'https://www.linkedin.com/in/ranjith-m-cs',
+  instagram: 'https://www.instagram.com/royal_ranjith24?obrf=aWNlYzZsMXo4dWwz',
   x: 'https://x.com/RANJITHMcs',
   bio: 'B.Sc. Computer Science student interested in full-stack development, Python programming and open-source technologies. I build web applications, explore backend engineering and contribute to projects involving Tamil-language OCR and document processing.'
 };
