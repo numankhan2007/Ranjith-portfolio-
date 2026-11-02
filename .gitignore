@@ -5,5 +5,3 @@ dist-ssr
 .vercel
 .env
 .DS_Store
-
-.vercel
