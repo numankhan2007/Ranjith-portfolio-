@@ -3,6 +3,8 @@ import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail, Menu, X, MapPin, Cross
 import { VscVscode } from 'react-icons/vsc';
 import { SiPython, SiJavascript, SiPhp, SiHtml5, SiCss, SiReact, SiTailwindcss, SiVite, SiNodedotjs, SiFastapi, SiPostgresql, SiMysql, SiSupabase, SiGit, SiRender } from 'react-icons/si';
 import { certifications, education, experience, profile, projects } from './data/portfolio';
+import Letterpress from './components/Letterpress';
+import NewspaperAtmosphere from './components/NewspaperAtmosphere';
 
 function SectionHead({ kicker, title, copy }: { kicker: string; title: ReactNode; copy?: string }) {
   return <div className="section-head reveal"><p className="eyebrow">{kicker}</p><h2>{title}</h2>{copy && <p className="section-copy">{copy}</p>}</div>;
@@ -67,6 +69,7 @@ function App() {
   const nav = [['About', '#about'], ['Skills', '#skills'], ['Experience', '#experience'], ['Projects', '#projects'], ['Archive', '#certifications'], ['Education', '#education']];
   return <div className="site-shell">
     <div className="grain" aria-hidden="true" />
+    <NewspaperAtmosphere />
     <header className="topbar">
       <a className="brand" href="#home" aria-label="Ranjith M home"><span className="brand-mark">RM</span><span>RANJITH M<span className="brand-sub">DEVELOPER · PORTFOLIO</span></span></a>
       <nav className={menuOpen ? 'nav-links open' : 'nav-links'} aria-label="Main navigation">{nav.map(([label, href]) => <a key={href} href={href} onClick={() => setMenuOpen(false)}>{label}</a>)}</nav>
@@ -81,7 +84,7 @@ function App() {
           <div className="newspaper-masthead"><span>THE DEVELOPER'S CHRONICLE</span><span>VILLUPURAM · TAMIL NADU</span><span>PORTFOLIO EDITION · 2026</span></div>
           <p className="eyebrow hero-kicker">COMPUTER SCIENCE · WEB DEVELOPMENT <span className="kicker-index">— VOL. 01</span></p>
           <p className="hero-overline">A PROFILE IN PROGRESS · HELLO, I'M</p>
-          <h1>Ranjith <em>M.</em></h1>
+          <h1><Letterpress text="Ranjith" /> <em><Letterpress text="M." delay={430} /></em></h1>
           <div className="hero-rule"><span/> <p>Building for the web. Learning by making.</p></div>
           <p className="hero-intro">{profile.bio}</p>
           <div className="hero-actions"><a className="button button-primary" href="#projects">Explore my work <ArrowDown size={16}/></a><a className="button button-outline" href="#contact">Get in touch <ArrowUpRight size={16}/></a></div>
@@ -124,7 +127,7 @@ function App() {
         <div className="project-paper-head"><div><div className="clipping-kicker">SPECIAL REPORT · SELECTED WORK</div><h2>Work under<br/><i>investigation.</i></h2><p className="project-intro">Three case files. Each one records a problem space, the tools involved and the work that can be examined.</p></div><div className="edition-box"><Newspaper size={34}/><span>THE PROJECT<br/>GAZETTE</span><small>VOL. 04 · 2026</small></div></div>
         <div className="project-clippings">{projects.map((project,i)=><article className={'project-clipping clipping-'+i+' reveal'} key={project.name}>
           <div className="clipping-head"><span>CASE FILE NO. 0{i+1}</span><span>{project.type.toUpperCase()}</span></div>
-          <div className="clipping-body"><div className="clipping-symbol">{i===0?<Fingerprint/>:i===1?<BookOpen/>:<FileSearch/>}</div><div className="clipping-copy"><h3>{project.name}</h3><p className="clipping-deck">{i===0?'A record-keeping system for structured student information.':i===1?'A digital catalogue and circulation workflow for library operations.':'Tamil-language document recognition and image-preprocessing contribution.'}</p><p className="clipping-description">{project.description}</p><ul className="evidence-findings">{projectEvidence[i].map((fact,j)=><li key={j}><span>{String(j+1).padStart(2,'0')}</span>{fact}</li>)}</ul><div className="project-tags">{project.stack.map(tag=><span key={tag}>{tag}</span>)}</div></div></div>
+          <div className="clipping-body"><div className="clipping-symbol">{i===0?<Fingerprint/>:i===1?<BookOpen/>:<FileSearch/>}</div><div className="clipping-copy"><h3><Letterpress text={project.name} delay={i * 90} /></h3><p className="clipping-deck">{i===0?'A record-keeping system for structured student information.':i===1?'A digital catalogue and circulation workflow for library operations.':'Tamil-language document recognition and image-preprocessing contribution.'}</p><p className="clipping-description">{project.description}</p><ul className="evidence-findings">{projectEvidence[i].map((fact,j)=><li key={j}><span>{String(j+1).padStart(2,'0')}</span>{fact}</li>)}</ul><div className="project-tags">{project.stack.map(tag=><span key={tag}>{tag}</span>)}</div></div></div>
           <div className="clipping-footer"><span><Stamp size={14}/> EVIDENCE / {i===2?'COMMUNITY CONTRIBUTION':'PROJECT RECORD'}</span>{project.repo?<a href={project.repo} target="_blank" rel="noreferrer">EXAMINE SOURCE <ArrowUpRight size={14}/></a>:<span className="source-pending">SOURCE URL NOT PROVIDED</span>}</div>
           {i===0&&<span className="ink-redaction-stamp" aria-hidden="true">FILED · REVIEWED</span>}
           {i===1&&<div className="clipping-tape" aria-hidden="true">LIBRARY FILE COPY</div>}
@@ -132,7 +135,7 @@ function App() {
         </article>)}</div>
       </section>
 
-      <section id="certifications" className="archive-section"><div className="section-number">05 / THE ARCHIVE</div><div className="archive-heading"><SectionHead kicker="DOCUMENTS OF THE JOURNEY" title={<>A wall of <i>milestones.</i></>} copy="An archival board of certificates and achievements. Select a document to inspect it."/></div><div className="archive-board"><div className="archive-stamp">PERSONAL<br/>ARCHIVE <span>EST. 2026</span></div><div className="pinboard">{certifications.map((cert, i) => <button className={'certificate-card cert-' + (i%4) + ' reveal'} key={cert.title} onClick={(event) => { previousFocusRef.current = event.currentTarget; setActiveCert(i); }} aria-label={'View certificate: ' + cert.title}><span className="pin"/><span className="cert-image"><img src={cert.image} alt={cert.title} loading="lazy"/></span><span className="cert-number">DOCUMENT NO. {String(i+1).padStart(2,'0')}</span><span className="cert-title">{cert.title}</span><span className="cert-issuer">{cert.issuer}</span>{cert.note && <span className="cert-note">{cert.note}</span>}</button>)}</div><p className="archive-foot">11 DOCUMENTS · ORIGINAL CREDENTIAL IMAGES · NO THIRD-PARTY VERIFICATION CLAIMS</p></div></section>
+      <section id="certifications" className="archive-section"><div className="section-number">05 / THE ARCHIVE</div><div className="archive-heading"><SectionHead kicker="DOCUMENTS OF THE JOURNEY" title={<>A wall of <i>milestones.</i></>} copy="An archival board of certificates and achievements. Select a document to inspect it."/></div><div className="archive-board"><div className="archive-stamp">PERSONAL<br/>ARCHIVE <span>EST. 2026</span></div><div className="pinboard">{certifications.map((cert, i) => <button className={'certificate-card cert-' + (i%4) + ' reveal'} key={cert.title} onClick={(event) => { previousFocusRef.current = event.currentTarget; setActiveCert(i); }} aria-label={'View certificate: ' + cert.title}><span className="pin"/><span className="cert-image"><img src={cert.image} alt={cert.title} loading="lazy"/></span><span className="cert-number">DOCUMENT NO. {String(i+1).padStart(2,'0')}</span><span className="cert-title"><Letterpress text={cert.title} delay={i * 55} /></span><span className="cert-issuer">{cert.issuer}</span>{cert.note && <span className="cert-note">{cert.note}</span>}</button>)}</div><p className="archive-foot">11 DOCUMENTS · ORIGINAL CREDENTIAL IMAGES · NO THIRD-PARTY VERIFICATION CLAIMS</p></div></section>
 
       <section id="education" className="education-section academic-dossier">
         <div className="section-number">06 / ACADEMIC RECORDS</div>
@@ -140,7 +143,7 @@ function App() {
         <SectionHead kicker="THE FORMATIVE YEARS" title={<>The record behind<br/><i>the byline.</i></>} copy="An academic record presented as a set of archived school and college documents. The details below preserve the qualifications and results supplied for this profile."/>
         <div className="education-dossier-grid">
           {education.map((item,i)=><article className={'education-document edu-'+i+' reveal'} key={item.degree}>
-            <div className="document-corner">ARCHIVE COPY · 0{i+1}</div><div className="edu-seal">{i===0?<GraduationCap/>:<BookOpen/>}</div><p className="edu-document-kicker">{i===0?'COLLEGE RECORD':i===1?'HIGHER SECONDARY RECORD':'SECONDARY SCHOOL RECORD'}</p><h3>{item.degree}</h3><div className="edu-rule"/><p className="edu-school">{item.school}</p><p className="edu-place">{item.place}</p>
+            <div className="document-corner">ARCHIVE COPY · 0{i+1}</div><div className="edu-seal">{i===0?<GraduationCap/>:<BookOpen/>}</div><p className="edu-document-kicker">{i===0?'COLLEGE RECORD':i===1?'HIGHER SECONDARY RECORD':'SECONDARY SCHOOL RECORD'}</p><h3><Letterpress text={item.degree} delay={i * 85} /></h3><div className="edu-rule"/><p className="edu-school">{item.school}</p><p className="edu-place">{item.place}</p>
             {item.result?<div className="result-slip"><span>RECORDED RESULT</span><strong>{item.result}</strong><small>AS SHOWN IN THE SUPPLIED PROFILE RECORD</small></div>:<div className="result-slip result-pending"><span>QUALIFICATION</span><strong>IN PROGRESS</strong><small>UNDERGRADUATE PROGRAMME</small></div>}
             <div className="edu-document-footer"><span>RANJITH M.</span><span>{i===0?'UNDERGRADUATE':'SCHOOLING'}</span></div>
           </article>)}

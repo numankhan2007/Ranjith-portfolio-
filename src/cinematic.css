@@ -1,0 +1,140 @@
+/* Fine ash, paper dust and restrained oxblood embers. This layer never captures input. */
+.paper-atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: .58;
+}
+
+.paper-mote {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  background: #725b3f;
+  opacity: 0;
+  animation-name: paperMoteDrift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+}
+
+.paper-mote--dust {
+  box-shadow: 0 0 2px rgba(76, 55, 32, .35);
+}
+
+.paper-mote--ember {
+  background: #8d332b;
+  box-shadow: 0 0 5px rgba(141, 51, 43, .42);
+}
+
+.scorched-vignette {
+  position: absolute;
+  inset: 0;
+  opacity: .15;
+  background:
+    radial-gradient(ellipse at 0 0, rgba(37, 22, 13, .32), transparent 17%),
+    radial-gradient(ellipse at 100% 0, rgba(37, 22, 13, .24), transparent 15%),
+    radial-gradient(ellipse at 0 100%, rgba(37, 22, 13, .28), transparent 16%),
+    radial-gradient(ellipse at 100% 100%, rgba(37, 22, 13, .32), transparent 17%);
+  mix-blend-mode: multiply;
+  animation: scorchedEdgeBreath 16s ease-in-out infinite alternate;
+}
+
+@keyframes paperMoteDrift {
+  0% { opacity: 0; transform: translate3d(0, 0, 0) scale(.65); }
+  14% { opacity: .34; }
+  72% { opacity: .2; }
+  100% { opacity: 0; transform: translate3d(var(--drift-x), var(--drift-y), 0) scale(1.15); }
+}
+
+@keyframes scorchedEdgeBreath {
+  from { opacity: .11; }
+  to { opacity: .2; }
+}
+
+/* A film-title letterpress: each glyph lands with a slightly different beat. */
+.letterpress,
+.letterpress-visual {
+  display: inline;
+}
+
+.letterpress-char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(.24em) rotate(-4deg) scale(.9);
+  transform-origin: 50% 82%;
+  filter: blur(1.2px);
+  will-change: opacity, transform;
+}
+
+.letterpress-char.is-space {
+  display: inline;
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+.hero .letterpress-char {
+  animation: letterpressPop .72s cubic-bezier(.18, .72, .22, 1) both;
+  animation-delay: calc(var(--letter-delay, 0ms) + var(--letter-index, 0) * 32ms);
+}
+
+.reveal.visible .letterpress-char {
+  animation: letterpressPop .58s cubic-bezier(.18, .72, .22, 1) both;
+  animation-delay: calc(var(--letter-delay, 0ms) + var(--letter-index, 0) * 28ms);
+}
+
+@keyframes letterpressPop {
+  0% {
+    opacity: 0;
+    transform: translateY(.24em) rotate(-4deg) scale(.9);
+    filter: blur(1.2px);
+  }
+  68% {
+    opacity: 1;
+    transform: translateY(-.035em) rotate(1deg) scale(1.035);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0) scale(1);
+    filter: none;
+  }
+}
+
+/* Keep the newspaper's ink and burn detail alive without flashing or heavy filters. */
+.archive-board:after {
+  animation: scorchedEdgeBreath 14s ease-in-out infinite alternate;
+}
+
+.paper-section:before,
+.evidence-section:before,
+.paper-evidence-section:before,
+.academic-dossier:before {
+  animation: scorchedEdgeBreath 18s ease-in-out infinite alternate;
+}
+
+.project-clipping.reveal.visible .clipping-copy h3,
+.education-document.reveal.visible h3 {
+  text-shadow: .45px 0 rgba(132, 46, 41, .28), -.35px 0 rgba(57, 45, 29, .2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paper-atmosphere { display: none; }
+  .scorched-vignette,
+  .letterpress-char,
+  .archive-board:after,
+  .paper-section:before,
+  .evidence-section:before,
+  .paper-evidence-section:before,
+  .academic-dossier:before {
+    animation: none !important;
+  }
+  .letterpress-char {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
