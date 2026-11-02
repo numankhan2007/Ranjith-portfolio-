@@ -1,10 +1,37 @@
-import { useEffect, useRef, useState, type ReactNode, type CSSProperties } from 'react';
-import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail, Menu, X, MapPin } from 'lucide-react';
-import { certifications, education, experience, profile, projects, skills } from './data/portfolio';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail, Menu, X, MapPin, Crosshair, FileSearch, Fingerprint, GraduationCap, BookOpen, ShieldCheck, Stamp, Newspaper } from 'lucide-react';
+import { VscVscode } from 'react-icons/vsc';
+import { SiPython, SiJavascript, SiPhp, SiHtml5, SiCss, SiReact, SiTailwindcss, SiVite, SiNodedotjs, SiFastapi, SiPostgresql, SiMysql, SiSupabase, SiGit, SiRender } from 'react-icons/si';
+import { certifications, education, experience, profile, projects } from './data/portfolio';
 
 function SectionHead({ kicker, title, copy }: { kicker: string; title: ReactNode; copy?: string }) {
   return <div className="section-head reveal"><p className="eyebrow">{kicker}</p><h2>{title}</h2>{copy && <p className="section-copy">{copy}</p>}</div>;
 }
+const skillNodes = [
+  { name: 'Python', Icon: SiPython, x: 9, y: 20, group: 'LANGUAGE' },
+  { name: 'JavaScript', Icon: SiJavascript, x: 29, y: 13, group: 'LANGUAGE' },
+  { name: 'PHP', Icon: SiPhp, x: 49, y: 20, group: 'LANGUAGE' },
+  { name: 'HTML5', Icon: SiHtml5, x: 70, y: 13, group: 'WEB' },
+  { name: 'CSS3', Icon: SiCss, x: 89, y: 22, group: 'WEB' },
+  { name: 'React', Icon: SiReact, x: 19, y: 49, group: 'FRONTEND' },
+  { name: 'Tailwind', Icon: SiTailwindcss, x: 40, y: 43, group: 'FRONTEND' },
+  { name: 'Vite', Icon: SiVite, x: 60, y: 51, group: 'TOOLING' },
+  { name: 'Node.js', Icon: SiNodedotjs, x: 81, y: 48, group: 'BACKEND' },
+  { name: 'FastAPI', Icon: SiFastapi, x: 10, y: 79, group: 'BACKEND' },
+  { name: 'PostgreSQL', Icon: SiPostgresql, x: 30, y: 84, group: 'DATA' },
+  { name: 'MySQL', Icon: SiMysql, x: 49, y: 76, group: 'DATA' },
+  { name: 'Supabase', Icon: SiSupabase, x: 68, y: 84, group: 'DATA' },
+  { name: 'Git', Icon: SiGit, x: 89, y: 79, group: 'TOOLS' },
+  { name: 'VS Code', Icon: VscVscode, x: 49, y: 98, group: 'TOOLS' },
+  { name: 'Render', Icon: SiRender, x: 72, y: 98, group: 'DEPLOY' }
+];
+const projectEvidence = [
+  ['Role-based access control', 'Encrypted session handling', 'Supabase PostgreSQL', 'Grade tracking & audit records'],
+  ['Book issue / return workflow', 'Timestamped transactions', 'Fine calculation logic', 'Catalogue indexing & dashboards'],
+  ['Tamil document preprocessing', 'Image binarisation utilities', 'OCR bounding-box workflows', 'Open-source collaboration']
+];
+const skillConnections = [[0,5],[0,9],[0,10],[0,11],[0,12],[1,2],[1,5],[1,6],[1,7],[1,8],[2,10],[3,4],[3,5],[3,6],[3,7],[4,5],[4,6],[5,6],[5,7],[6,7],[7,8],[8,11],[8,12],[9,10],[9,11],[10,11],[10,12],[11,12],[12,15],[13,14],[13,15],[1,13],[0,13]];
+
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeCert, setActiveCert] = useState<number | null>(null);
@@ -65,15 +92,60 @@ function App() {
 
       <section id="about" className="paper-section about-section"><div className="section-number">01 / ABOUT</div><div className="about-layout"><SectionHead kicker="A LITTLE CONTEXT" title={<>Curiosity, turned<br/><i>into code.</i></>}/><div className="about-body reveal"><p className="lead">I’m a Computer Science student with a growing focus on full-stack development, Python and open-source technology.</p><p>I enjoy understanding how products work beneath the interface — from thoughtful frontend experiences to backend logic and data. I’m especially interested in language technology and tools that make digital information more accessible.</p><div className="about-signature">Ranjith M <span>— Developer in progress</span></div></div></div></section>
 
-      <section id="skills" className="dark-section skills-section"><div className="section-number light">02 / TOOLKIT</div><SectionHead kicker="TOOLS I WORK WITH" title={<>A practical <i>toolkit.</i></>} copy="Technologies I have worked with across learning, projects and collaboration."/><div className="skill-grid">{skills.map((group, i) => <article className="skill-card reveal" key={group.group} style={{'--delay': i * 70 + 'ms'} as CSSProperties}><span className="skill-index">0{i+1}</span><h3>{group.group}</h3><div className="skill-tags">{group.items.map(item => <span key={item}>{item}</span>)}</div></article>)}</div></section>
+      <section id="skills" className="skills-section evidence-section">
+        <div className="section-number light">02 / INTELLIGENCE WALL · CASE FILE 026</div>
+        <div className="case-masthead"><span>THE TECHNICAL DOSSIER</span><span>SUBJECT: RANJITH M.</span><span>CLASSIFIED / OPEN SOURCE</span></div>
+        <SectionHead kicker="CONNECTIONS, NOT JUST CHECKLISTS" title={<>Follow the <i>connections.</i></>} copy="A visual investigation board mapping the tools and technologies used across the work. Follow the red thread between languages, interfaces, services and data stores."/>
+        <div className="evidence-board reveal">
+          <div className="board-topline"><span><Crosshair size={13}/> EVIDENCE MAP / 01</span><span>16 NODES · 33 CONNECTIONS</span><span>FIELD NOTES — 2026</span></div>
+          <div className="network-canvas" role="img" aria-label="Technology relationship map connecting Python, JavaScript, PHP, HTML, CSS, React, Tailwind, Vite, Node.js, FastAPI, PostgreSQL, MySQL, Supabase, Git, VS Code and Render">
+            <svg className="network-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              {skillConnections.map(([a,b],i)=>{const p=skillNodes[a],q=skillNodes[b];return <line key={i} x1={p.x} y1={p.y} x2={q.x} y2={q.y} className={i%5===0?'thread-line hot':'thread-line'}/>})}
+              {skillNodes.map((p,i)=><circle key={i} cx={p.x} cy={p.y} r=".48" className="thread-junction"/>)}
+            </svg>
+            {skillNodes.map(({name,Icon,group},i)=><div key={name} className={'evidence-node node-'+i} style={{left:skillNodes[i].x+'%',top:skillNodes[i].y+'%'}}>
+              <span className="node-pin"/><span className="node-logo"><Icon/></span><span className="node-label">{name}</span><span className="node-class">{group}</span>
+            </div>)}
+            <div className="board-note note-one"><span>01 / INPUT</span> Languages & markup</div>
+            <div className="board-note note-two"><span>02 / BUILD</span> UI & runtime</div>
+            <div className="board-note note-three"><span>03 / STORE</span> Data & delivery</div>
+            <div className="red-string string-cross"/><div className="red-string string-loop"/>
+          </div>
+          <div className="board-legend"><span><i className="legend-dot red"/> Core relationship</span><span><i className="legend-dot cream"/> Tool / platform</span><span><i className="legend-dot gold"/> Data connection</span><span className="legend-stamp">EVIDENCE INDEXED</span></div>
+        </div>
+        <div className="skills-caption"><span>FIELD NOTE 02-A</span><p>Connections represent practical workflow relationships, not proficiency rankings or claims of production-level expertise.</p></div>
+      </section>
 
       <section id="experience" className="paper-section experience-section"><div className="section-number">03 / EXPERIENCE</div><SectionHead kicker="THE JOURNEY SO FAR" title={<>Learning through <i>experience.</i></>} copy="A timeline of internships and community contributions. Dates and statuses reflect the information currently confirmed."/><div className="timeline">{experience.map((item) => <article className="timeline-item reveal" key={item.org}><div className="timeline-marker"><span/></div><div className="timeline-date">{item.date}</div><div className="timeline-content"><div className="timeline-title"><div><h3>{item.role}</h3><p>{item.org}</p></div><span className={'status status-' + item.status.toLowerCase()}>{item.status}</span></div><p className="timeline-detail">{item.detail}</p></div></article>)}</div></section>
 
-      <section id="projects" className="dark-section projects-section"><div className="section-number light">04 / SELECTED WORK</div><SectionHead kicker="MADE WITH INTENTION" title={<>A few things <i>I've built.</i></>} copy="A selection of project work and contribution areas. Repository links are shown only where the destination is confirmed."/><div className="project-list">{projects.map((project, i) => <article className="project-row reveal" key={project.name}><div className="project-count">0{i+1}</div><div className="project-main"><p className="eyebrow">{project.type}</p><h3>{project.name}</h3><p>{project.description}</p><div className="project-tags">{project.stack.map(tag => <span key={tag}>{tag}</span>)}</div></div><div className="project-action">{project.repo ? <a href={project.repo} target="_blank" rel="noreferrer" aria-label={'Open ' + project.name + ' organization page'}><ArrowUpRight/></a> : <span className="link-pending" title="Exact repository URL has not been supplied">SOURCE URL<br/>NOT PROVIDED</span>}</div></article>)}</div></section>
+      <section id="projects" className="projects-section paper-evidence-section">
+        <div className="section-number">04 / THE INVESTIGATION FILES</div>
+        <div className="project-paper-head"><div><div className="clipping-kicker">SPECIAL REPORT · SELECTED WORK</div><h2>Work under<br/><i>investigation.</i></h2><p className="project-intro">Three case files. Each one records a problem space, the tools involved and the work that can be examined.</p></div><div className="edition-box"><Newspaper size={34}/><span>THE PROJECT<br/>GAZETTE</span><small>VOL. 04 · 2026</small></div></div>
+        <div className="project-clippings">{projects.map((project,i)=><article className={'project-clipping clipping-'+i+' reveal'} key={project.name}>
+          <div className="clipping-head"><span>CASE FILE NO. 0{i+1}</span><span>{project.type.toUpperCase()}</span></div>
+          <div className="clipping-body"><div className="clipping-symbol">{i===0?<Fingerprint/>:i===1?<BookOpen/>:<FileSearch/>}</div><div className="clipping-copy"><h3>{project.name}</h3><p className="clipping-deck">{i===0?'A record-keeping system for structured student information.':i===1?'A digital catalogue and circulation workflow for library operations.':'Tamil-language document recognition and image-preprocessing contribution.'}</p><p className="clipping-description">{project.description}</p><ul className="evidence-findings">{projectEvidence[i].map((fact,j)=><li key={j}><span>{String(j+1).padStart(2,'0')}</span>{fact}</li>)}</ul><div className="project-tags">{project.stack.map(tag=><span key={tag}>{tag}</span>)}</div></div></div>
+          <div className="clipping-footer"><span><Stamp size={14}/> EVIDENCE / {i===2?'COMMUNITY CONTRIBUTION':'PROJECT RECORD'}</span>{project.repo?<a href={project.repo} target="_blank" rel="noreferrer">EXAMINE SOURCE <ArrowUpRight size={14}/></a>:<span className="source-pending">SOURCE URL NOT PROVIDED</span>}</div>
+          {i===0&&<div className="redaction-mark" aria-hidden="true">RECORDS / ACCESS / AUDIT</div>}
+          {i===1&&<div className="clipping-tape" aria-hidden="true">LIBRARY FILE COPY</div>}
+          {i===2&&<div className="contribution-seal">OPEN<br/>SOURCE</div>}
+        </article>)}</div>
+      </section>
 
       <section id="certifications" className="archive-section"><div className="section-number">05 / THE ARCHIVE</div><div className="archive-heading"><SectionHead kicker="DOCUMENTS OF THE JOURNEY" title={<>A wall of <i>milestones.</i></>} copy="An archival board of certificates and achievements. Select a document to inspect it."/></div><div className="archive-board"><div className="archive-stamp">PERSONAL<br/>ARCHIVE <span>EST. 2026</span></div><div className="pinboard">{certifications.map((cert, i) => <button className={'certificate-card cert-' + (i%4) + ' reveal'} key={cert.title} onClick={(event) => { previousFocusRef.current = event.currentTarget; setActiveCert(i); }} aria-label={'View certificate: ' + cert.title}><span className="pin"/><span className="cert-image"><img src={cert.image} alt={cert.title} loading="lazy"/></span><span className="cert-number">DOCUMENT NO. {String(i+1).padStart(2,'0')}</span><span className="cert-title">{cert.title}</span><span className="cert-issuer">{cert.issuer}</span>{cert.note && <span className="cert-note">{cert.note}</span>}</button>)}</div><p className="archive-foot">11 DOCUMENTS · ORIGINAL CREDENTIAL IMAGES · NO THIRD-PARTY VERIFICATION CLAIMS</p></div></section>
 
-      <section id="education" className="paper-section education-section"><div className="section-number">06 / EDUCATION</div><SectionHead kicker="ACADEMIC FOUNDATION" title={<>Where it <i>started.</i></>}/><div className="education-list">{education.map((item,i) => <article className="education-row reveal" key={item.degree}><span className="education-index">0{i+1}</span><div><h3>{item.degree}</h3><p>{item.school} · {item.place}</p></div>{item.result && <span className="education-result">{item.result}</span>}</article>)}</div></section>
+      <section id="education" className="education-section academic-dossier">
+        <div className="section-number">06 / ACADEMIC RECORDS</div>
+        <div className="education-masthead"><span>THE EDUCATION REGISTER</span><span>PERSONAL FILE · RM / 026</span></div>
+        <SectionHead kicker="THE FORMATIVE YEARS" title={<>The record behind<br/><i>the byline.</i></>} copy="An academic record presented as a set of archived school and college documents. The details below preserve the qualifications and results supplied for this profile."/>
+        <div className="education-dossier-grid">
+          {education.map((item,i)=><article className={'education-document edu-'+i+' reveal'} key={item.degree}>
+            <div className="document-corner">ARCHIVE COPY · 0{i+1}</div><div className="edu-seal">{i===0?<GraduationCap/>:<BookOpen/>}</div><p className="edu-document-kicker">{i===0?'COLLEGE RECORD':i===1?'HIGHER SECONDARY RECORD':'SECONDARY SCHOOL RECORD'}</p><h3>{item.degree}</h3><div className="edu-rule"/><p className="edu-school">{item.school}</p><p className="edu-place">{item.place}</p>
+            {item.result?<div className="result-slip"><span>RECORDED RESULT</span><strong>{item.result}</strong><small>AS SHOWN IN THE SUPPLIED PROFILE RECORD</small></div>:<div className="result-slip result-pending"><span>QUALIFICATION</span><strong>COMPLETED</strong><small>COLLEGE PROGRAMME</small></div>}
+            <div className="edu-document-footer"><span>RANJITH M.</span><span>{i===0?'UNDERGRADUATE':'SCHOOLING'}</span></div>
+          </article>)}
+        </div>
+        <div className="education-ledger"><div><span>01 / FOUNDATION</span><p>Secondary schooling at Government High School, Siruvalai.</p></div><div><span>02 / HIGHER SECONDARY</span><p>Higher Secondary education at Government Higher Secondary School, Panamalaippettai.</p></div><div><span>03 / UNDERGRADUATE</span><p>B.Sc. Computer Science at Arignar Anna Government Arts College, Villupuram.</p></div></div><div className="education-note"><ShieldCheck size={17}/><p>Academic details are displayed as supplied. No graduation year, institution dates or unprovided marks have been added.</p></div>
+      </section>
     </main>
 
     <footer id="contact" className="footer dark-section"><div className="section-number light">07 / CONTACT</div><div className="footer-main"><div><p className="eyebrow">HAVE A PROJECT OR AN IDEA?</p><h2>Let's make<br/><i>something matter.</i></h2></div><a className="footer-email" href={'mailto:' + profile.email}>{profile.email}<ArrowUpRight/></a></div><div className="footer-bottom"><span>© {new Date().getFullYear()} Ranjith M · Built with curiosity.</span><div className="social-links"><a href={profile.github} target="_blank" rel="noreferrer"><Github size={16}/> GitHub</a><a href={profile.linkedin} target="_blank" rel="noreferrer"><Linkedin size={16}/> LinkedIn</a><a href={profile.x} target="_blank" rel="noreferrer">𝕏 <span>Twitter</span></a><a href={'mailto:' + profile.email}><Mail size={16}/> Email</a></div><a href="#home" className="back-top">BACK TO TOP ↑</a></div></footer>
