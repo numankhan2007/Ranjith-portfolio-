@@ -199,7 +199,7 @@ erDiagram
         string name
         string type
         string description
-        string[] stack
+        string stack
         string repository_url
     }
     CERTIFICATION {
