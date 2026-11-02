@@ -4,7 +4,6 @@ import { VscVscode } from 'react-icons/vsc';
 import { SiPython, SiJavascript, SiPhp, SiHtml5, SiCss, SiReact, SiTailwindcss, SiVite, SiNodedotjs, SiFastapi, SiPostgresql, SiMysql, SiSupabase, SiGit, SiRender } from 'react-icons/si';
 import { certifications, education, experience, profile, projects } from './data/portfolio';
 import Letterpress from './components/Letterpress';
-import NewspaperAtmosphere from './components/NewspaperAtmosphere';
 
 function SectionHead({ kicker, title, copy }: { kicker: string; title: ReactNode; copy?: string }) {
   return <div className="section-head reveal"><p className="eyebrow">{kicker}</p><h2>{title}</h2>{copy && <p className="section-copy">{copy}</p>}</div>;
@@ -33,11 +32,20 @@ const projectEvidence = [
   ['Tamil document preprocessing', 'Image binarisation utilities', 'OCR bounding-box workflows', 'Open-source collaboration']
 ];
 const skillConnections = [[0,5],[0,9],[0,10],[0,11],[0,12],[1,2],[1,5],[1,6],[1,7],[1,8],[2,10],[3,4],[3,5],[3,6],[3,7],[4,5],[4,6],[5,6],[5,7],[6,7],[7,8],[8,11],[8,12],[9,10],[9,11],[10,11],[10,12],[11,12],[12,15],[13,14],[13,15],[1,13],[0,13]];
+const mobileSkillPositions = [[18,9],[50,9],[82,9],[18,25],[50,25],[82,25],[18,41],[50,41],[82,41],[18,57],[50,57],[82,57],[18,73],[50,73],[82,73],[50,89]].map(([x,y]) => ({x,y}));
+const desktopSkillPositions = skillNodes.map(({x,y}) => ({x,y}));
+const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
+const getDefaultSkillPositions = () => (typeof window !== 'undefined' && window.matchMedia('(max-width: 700px)').matches ? mobileSkillPositions : desktopSkillPositions).map(point => ({ ...point }));
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeCert, setActiveCert] = useState<number | null>(null);
   const [selectedSkill, setSelectedSkill] = useState<number | null>(null);
+  const [skillPositions, setSkillPositions] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 700px)').matches ? mobileSkillPositions : desktopSkillPositions);
+  const [draggingSkill, setDraggingSkill] = useState<number | null>(null);
+  const networkRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<{ index:number; pointerId:number; startX:number; startY:number; lastX:number; lastY:number; neighbours:Record<number,{x:number;y:number}> } | null>(null);
+  const snapbackTimerRef = useRef<number | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
   useEffect(() => {
@@ -49,6 +57,76 @@ function App() {
     nodes.forEach(n => observer.observe(n));
     return () => observer.disconnect();
   }, []);
+  useEffect(() => {
+    const updateLayout = () => {
+      if (dragRef.current) return;
+      setSkillPositions(window.matchMedia('(max-width: 700px)').matches ? mobileSkillPositions : desktopSkillPositions);
+    };
+    window.addEventListener('resize', updateLayout);
+    return () => {
+      window.removeEventListener('resize', updateLayout);
+      if (snapbackTimerRef.current !== null) window.clearTimeout(snapbackTimerRef.current);
+    };
+  }, []);
+  const beginSkillDrag = (index:number, event:React.PointerEvent<HTMLButtonElement>) => {
+    if (event.button !== 0) return;
+    if (snapbackTimerRef.current !== null) {
+      window.clearTimeout(snapbackTimerRef.current);
+      snapbackTimerRef.current = null;
+    }
+    event.preventDefault();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    const neighbours = Object.fromEntries(skillConnections.flatMap(([a,b]) => a === index ? [[b,{...skillPositions[b]}]] : b === index ? [[a,{...skillPositions[a]}]] : []));
+    dragRef.current = {index,pointerId:event.pointerId,startX:event.clientX,startY:event.clientY,lastX:event.clientX,lastY:event.clientY,neighbours};
+    setDraggingSkill(index);
+    setSelectedSkill(index);
+  };
+  const moveSkillDrag = (event:React.PointerEvent<HTMLDivElement>) => {
+    const drag = dragRef.current;
+    const canvas = networkRef.current;
+    if (!drag || !canvas || event.pointerId !== drag.pointerId) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = clamp((event.clientX - rect.left) / rect.width * 100, 4, 96);
+    const y = clamp((event.clientY - rect.top) / rect.height * 100, 5, 95);
+    const dx = (event.clientX - drag.startX) / rect.width * 100;
+    const dy = (event.clientY - drag.startY) / rect.height * 100;
+    drag.lastX = event.clientX; drag.lastY = event.clientY;
+    setSkillPositions(previous => {
+      const next = previous.map(point => ({...point}));
+      next[drag.index] = {x,y};
+      Object.entries(drag.neighbours).forEach(([key,origin]) => {
+        const neighbour = Number(key);
+        next[neighbour] = {x:clamp(origin.x + dx * .13,3,97),y:clamp(origin.y + dy * .13,4,96)};
+      });
+      return next;
+    });
+  };
+  const finishSkillDrag = (event:React.PointerEvent<HTMLElement>) => {
+    const drag = dragRef.current;
+    if (!drag || event.pointerId !== drag.pointerId) return;
+    dragRef.current = null;
+    setDraggingSkill(null);
+
+    // Leave the whole evidence cluster where it was dropped for three seconds.
+    // Then return every node to its responsive desktop/mobile home position.
+    if (snapbackTimerRef.current !== null) window.clearTimeout(snapbackTimerRef.current);
+    snapbackTimerRef.current = window.setTimeout(() => {
+      setSkillPositions(getDefaultSkillPositions());
+      snapbackTimerRef.current = null;
+    }, 3000);
+  };
+
+  const cancelSkillDrag = (pointerId:number) => {
+    const drag = dragRef.current;
+    if (!drag || drag.pointerId !== pointerId) return;
+    dragRef.current = null;
+    setDraggingSkill(null);
+    if (snapbackTimerRef.current !== null) {
+      window.clearTimeout(snapbackTimerRef.current);
+      snapbackTimerRef.current = null;
+    }
+    setSkillPositions(getDefaultSkillPositions());
+  };
   useEffect(() => {
     if (activeCert === null) return;
     const closeButton = modalRef.current?.querySelector<HTMLButtonElement>('.modal-close');
@@ -69,7 +147,6 @@ function App() {
   const nav = [['About', '#about'], ['Skills', '#skills'], ['Experience', '#experience'], ['Projects', '#projects'], ['Archive', '#certifications'], ['Education', '#education']];
   return <div className="site-shell">
     <div className="grain" aria-hidden="true" />
-    <NewspaperAtmosphere />
     <header className="topbar">
       <a className="brand" href="#home" aria-label="Ranjith M home"><span className="brand-mark">RM</span><span>RANJITH M<span className="brand-sub">DEVELOPER · PORTFOLIO</span></span></a>
       <nav className={menuOpen ? 'nav-links open' : 'nav-links'} aria-label="Main navigation">{nav.map(([label, href]) => <a key={href} href={href} onClick={() => setMenuOpen(false)}>{label}</a>)}</nav>
@@ -102,22 +179,21 @@ function App() {
         <SectionHead kicker="CONNECTIONS, NOT JUST CHECKLISTS" title={<>Follow the <i>connections.</i></>} copy="A visual investigation board mapping the tools and technologies used across the work. Follow the red thread between languages, interfaces, services and data stores."/>
         <div className="evidence-board reveal">
           <div className="board-topline"><span><Crosshair size={13}/> EVIDENCE MAP / 01</span><span>16 NODES · 33 CONNECTIONS</span><span>FIELD NOTES — 2026</span></div>
-          <div className="network-canvas" role="img" aria-label="Technology relationship map connecting Python, JavaScript, PHP, HTML, CSS, React, Tailwind, Vite, Node.js, FastAPI, PostgreSQL, MySQL, Supabase, Git, VS Code and Render">
+          <div className={draggingSkill === null ? "network-canvas" : "network-canvas is-dragging"} ref={networkRef} onPointerMove={moveSkillDrag} onPointerUp={finishSkillDrag} onPointerCancel={(event)=>cancelSkillDrag(event.pointerId)} aria-label="Interactive technology relationship board">
             <svg className="network-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-              {skillConnections.map(([a,b],i)=>{const p=skillNodes[a],q=skillNodes[b];const active=selectedSkill===null||a===selectedSkill||b===selectedSkill;return <line key={i} x1={p.x} y1={p.y} x2={q.x} y2={q.y} className={(i%5===0?'thread-line hot':'thread-line')+(active?' is-active':' is-muted')}/>})}
-              {skillNodes.map((p,i)=><circle key={i} cx={p.x} cy={p.y} r=".48" className="thread-junction"/>)}
+              {skillConnections.map(([a,b],i)=>{const p=skillPositions[a],q=skillPositions[b];const active=selectedSkill===null||a===selectedSkill||b===selectedSkill;const dx=q.x-p.x,dy=q.y-p.y,len=Math.max(1,Math.hypot(dx,dy));const sway=((i%5)-2)*1.4;const cx=(p.x+q.x)/2-(dy/len)*sway;const cy=(p.y+q.y)/2+(dx/len)*sway+Math.min(5,len*.055);const d=`M ${p.x} ${p.y} Q ${cx} ${cy} ${q.x} ${q.y}`;return <g key={i} className={active?'is-active':'is-muted'}><path d={d} className="thread-shadow"/><path d={d} className={'thread-line'+(active?' is-active':' is-muted')}/></g>})}
+              {skillPositions.map((point,i)=><circle key={i} cx={point.x} cy={point.y} r=".35" className="thread-junction"/>)}
             </svg>
-            {skillNodes.map(({name,Icon,group},i)=>{const connected=selectedSkill!==null&&skillConnections.some(([a,b])=>(a===i&&b===selectedSkill)||(b===i&&a===selectedSkill));const selected=selectedSkill===i;const dimmed=selectedSkill!==null&&!selected&&!connected;return <button type="button" key={name} className={'evidence-node node-'+i+(selected?' is-selected':'')+(connected?' is-connected':'')+(dimmed?' is-dimmed':'')} style={{left:skillNodes[i].x+'%',top:skillNodes[i].y+'%'}} aria-pressed={selected} aria-label={'Trace connections for '+name} onClick={()=>setSelectedSkill(selected?null:i)}>
+            {skillNodes.map(({name,Icon,group},i)=>{const connected=selectedSkill!==null&&skillConnections.some(([a,b])=>(a===i&&b===selectedSkill)||(b===i&&a===selectedSkill));const selected=selectedSkill===i;const dimmed=selectedSkill!==null&&!selected&&!connected;return <button type="button" key={name} data-skill={i} className={'evidence-node node-'+i+(selected?' is-selected':'')+(connected?' is-connected':'')+(dimmed?' is-dimmed':'')+(draggingSkill===i?' is-dragging':'')} style={{left:skillPositions[i].x+'%',top:skillPositions[i].y+'%','--node-x':skillPositions[i].x+'%','--node-y':skillPositions[i].y+'%'} as React.CSSProperties} aria-pressed={selected} aria-label={'Drag '+name+' to rearrange the board, or select to trace its connections'} onPointerDown={event=>beginSkillDrag(i,event)} onPointerUp={finishSkillDrag} onLostPointerCapture={event=>{if(dragRef.current?.pointerId===event.pointerId)finishSkillDrag(event)}} onClick={event=>{if(event.detail===0)setSelectedSkill(selected?null:i)}}>
               <span className="node-pin"/><span className="node-logo"><Icon/></span><span className="node-label">{name}</span><span className="node-class">{group}</span>
             </button>})}
             <div className="board-note note-one"><span>01 / INPUT</span> Languages & markup</div>
             <div className="board-note note-two"><span>02 / BUILD</span> UI & runtime</div>
             <div className="board-note note-three"><span>03 / STORE</span> Data & delivery</div>
-            <div className="red-string string-cross"/><div className="red-string string-loop"/>
           </div>
           <div className="board-legend"><span><i className="legend-dot red"/> Core relationship</span><span><i className="legend-dot cream"/> Tool / platform</span><span><i className="legend-dot gold"/> Data connection</span><span className="legend-stamp">EVIDENCE INDEXED</span></div>
         </div>
-        <div className="skills-caption"><span>{selectedSkill===null?'FIELD NOTE 02-A':'TRACE ACTIVE'}</span><p aria-live="polite">{selectedSkill===null?'Select any technology card to trace its direct connections across the evidence board. Connections represent workflow relationships, not proficiency rankings.':`Tracing ${skillNodes[selectedSkill].name}: connected technologies are highlighted. Select it again to clear the trace.`}</p></div>
+        <div className="skills-caption"><span>{selectedSkill===null?'FIELD NOTE 02-A':'TRACE ACTIVE'}</span><p aria-live="polite">{selectedSkill===null?'Drag a skill to rearrange the board. The skill and its connected nodes return to their original positions after 3 seconds. Tap or focus a skill to trace its relationships; connections show workflow relationships, not proficiency rankings.':`Tracing ${skillNodes[selectedSkill].name}: connected technologies are highlighted. Drag to reposition; select another skill to change the trace.`}</p></div>
       </section>
 
       <section id="experience" className="paper-section experience-section"><div className="section-number">03 / EXPERIENCE</div><SectionHead kicker="THE JOURNEY SO FAR" title={<>Learning through <i>experience.</i></>} copy="A timeline of internships and community contributions. Dates and statuses reflect the information currently confirmed."/><div className="timeline">{experience.map((item) => <article className="timeline-item reveal" key={item.org}><div className="timeline-marker"><span/></div><div className="timeline-date">{item.date}</div><div className="timeline-content"><div className="timeline-title"><div><h3>{item.role}</h3><p>{item.org}</p></div><span className={'status status-' + item.status.toLowerCase()}>{item.status}</span></div><p className="timeline-detail">{item.detail}</p></div></article>)}</div></section>
