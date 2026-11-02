@@ -35,6 +35,7 @@ const skillConnections = [[0,5],[0,9],[0,10],[0,11],[0,12],[1,2],[1,5],[1,6],[1,
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeCert, setActiveCert] = useState<number | null>(null);
+  const [selectedSkill, setSelectedSkill] = useState<number | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
   useEffect(() => {
@@ -100,12 +101,12 @@ function App() {
           <div className="board-topline"><span><Crosshair size={13}/> EVIDENCE MAP / 01</span><span>16 NODES · 33 CONNECTIONS</span><span>FIELD NOTES — 2026</span></div>
           <div className="network-canvas" role="img" aria-label="Technology relationship map connecting Python, JavaScript, PHP, HTML, CSS, React, Tailwind, Vite, Node.js, FastAPI, PostgreSQL, MySQL, Supabase, Git, VS Code and Render">
             <svg className="network-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-              {skillConnections.map(([a,b],i)=>{const p=skillNodes[a],q=skillNodes[b];return <line key={i} x1={p.x} y1={p.y} x2={q.x} y2={q.y} className={i%5===0?'thread-line hot':'thread-line'}/>})}
+              {skillConnections.map(([a,b],i)=>{const p=skillNodes[a],q=skillNodes[b];const active=selectedSkill===null||a===selectedSkill||b===selectedSkill;return <line key={i} x1={p.x} y1={p.y} x2={q.x} y2={q.y} className={(i%5===0?'thread-line hot':'thread-line')+(active?' is-active':' is-muted')}/>})}
               {skillNodes.map((p,i)=><circle key={i} cx={p.x} cy={p.y} r=".48" className="thread-junction"/>)}
             </svg>
-            {skillNodes.map(({name,Icon,group},i)=><div key={name} className={'evidence-node node-'+i} style={{left:skillNodes[i].x+'%',top:skillNodes[i].y+'%'}}>
+            {skillNodes.map(({name,Icon,group},i)=>{const connected=selectedSkill!==null&&skillConnections.some(([a,b])=>(a===i&&b===selectedSkill)||(b===i&&a===selectedSkill));const selected=selectedSkill===i;const dimmed=selectedSkill!==null&&!selected&&!connected;return <button type="button" key={name} className={'evidence-node node-'+i+(selected?' is-selected':'')+(connected?' is-connected':'')+(dimmed?' is-dimmed':'')} style={{left:skillNodes[i].x+'%',top:skillNodes[i].y+'%'}} aria-pressed={selected} aria-label={'Trace connections for '+name} onClick={()=>setSelectedSkill(selected?null:i)}>
               <span className="node-pin"/><span className="node-logo"><Icon/></span><span className="node-label">{name}</span><span className="node-class">{group}</span>
-            </div>)}
+            </button>})}
             <div className="board-note note-one"><span>01 / INPUT</span> Languages & markup</div>
             <div className="board-note note-two"><span>02 / BUILD</span> UI & runtime</div>
             <div className="board-note note-three"><span>03 / STORE</span> Data & delivery</div>
@@ -113,7 +114,7 @@ function App() {
           </div>
           <div className="board-legend"><span><i className="legend-dot red"/> Core relationship</span><span><i className="legend-dot cream"/> Tool / platform</span><span><i className="legend-dot gold"/> Data connection</span><span className="legend-stamp">EVIDENCE INDEXED</span></div>
         </div>
-        <div className="skills-caption"><span>FIELD NOTE 02-A</span><p>Connections represent practical workflow relationships, not proficiency rankings or claims of production-level expertise.</p></div>
+        <div className="skills-caption"><span>{selectedSkill===null?'FIELD NOTE 02-A':'TRACE ACTIVE'}</span><p aria-live="polite">{selectedSkill===null?'Select any technology card to trace its direct connections across the evidence board. Connections represent workflow relationships, not proficiency rankings.':`Tracing ${skillNodes[selectedSkill].name}: connected technologies are highlighted. Select it again to clear the trace.`}</p></div>
       </section>
 
       <section id="experience" className="paper-section experience-section"><div className="section-number">03 / EXPERIENCE</div><SectionHead kicker="THE JOURNEY SO FAR" title={<>Learning through <i>experience.</i></>} copy="A timeline of internships and community contributions. Dates and statuses reflect the information currently confirmed."/><div className="timeline">{experience.map((item) => <article className="timeline-item reveal" key={item.org}><div className="timeline-marker"><span/></div><div className="timeline-date">{item.date}</div><div className="timeline-content"><div className="timeline-title"><div><h3>{item.role}</h3><p>{item.org}</p></div><span className={'status status-' + item.status.toLowerCase()}>{item.status}</span></div><p className="timeline-detail">{item.detail}</p></div></article>)}</div></section>
@@ -125,7 +126,7 @@ function App() {
           <div className="clipping-head"><span>CASE FILE NO. 0{i+1}</span><span>{project.type.toUpperCase()}</span></div>
           <div className="clipping-body"><div className="clipping-symbol">{i===0?<Fingerprint/>:i===1?<BookOpen/>:<FileSearch/>}</div><div className="clipping-copy"><h3>{project.name}</h3><p className="clipping-deck">{i===0?'A record-keeping system for structured student information.':i===1?'A digital catalogue and circulation workflow for library operations.':'Tamil-language document recognition and image-preprocessing contribution.'}</p><p className="clipping-description">{project.description}</p><ul className="evidence-findings">{projectEvidence[i].map((fact,j)=><li key={j}><span>{String(j+1).padStart(2,'0')}</span>{fact}</li>)}</ul><div className="project-tags">{project.stack.map(tag=><span key={tag}>{tag}</span>)}</div></div></div>
           <div className="clipping-footer"><span><Stamp size={14}/> EVIDENCE / {i===2?'COMMUNITY CONTRIBUTION':'PROJECT RECORD'}</span>{project.repo?<a href={project.repo} target="_blank" rel="noreferrer">EXAMINE SOURCE <ArrowUpRight size={14}/></a>:<span className="source-pending">SOURCE URL NOT PROVIDED</span>}</div>
-          {i===0&&<div className="redaction-mark" aria-hidden="true">RECORDS / ACCESS / AUDIT</div>}
+          {i===0&&<span className="ink-redaction-stamp" aria-hidden="true">FILED · REVIEWED</span>}
           {i===1&&<div className="clipping-tape" aria-hidden="true">LIBRARY FILE COPY</div>}
           {i===2&&<div className="contribution-seal">OPEN<br/>SOURCE</div>}
         </article>)}</div>
@@ -140,7 +141,7 @@ function App() {
         <div className="education-dossier-grid">
           {education.map((item,i)=><article className={'education-document edu-'+i+' reveal'} key={item.degree}>
             <div className="document-corner">ARCHIVE COPY · 0{i+1}</div><div className="edu-seal">{i===0?<GraduationCap/>:<BookOpen/>}</div><p className="edu-document-kicker">{i===0?'COLLEGE RECORD':i===1?'HIGHER SECONDARY RECORD':'SECONDARY SCHOOL RECORD'}</p><h3>{item.degree}</h3><div className="edu-rule"/><p className="edu-school">{item.school}</p><p className="edu-place">{item.place}</p>
-            {item.result?<div className="result-slip"><span>RECORDED RESULT</span><strong>{item.result}</strong><small>AS SHOWN IN THE SUPPLIED PROFILE RECORD</small></div>:<div className="result-slip result-pending"><span>QUALIFICATION</span><strong>COMPLETED</strong><small>COLLEGE PROGRAMME</small></div>}
+            {item.result?<div className="result-slip"><span>RECORDED RESULT</span><strong>{item.result}</strong><small>AS SHOWN IN THE SUPPLIED PROFILE RECORD</small></div>:<div className="result-slip result-pending"><span>QUALIFICATION</span><strong>IN PROGRESS</strong><small>UNDERGRADUATE PROGRAMME</small></div>}
             <div className="edu-document-footer"><span>RANJITH M.</span><span>{i===0?'UNDERGRADUATE':'SCHOOLING'}</span></div>
           </article>)}
         </div>
