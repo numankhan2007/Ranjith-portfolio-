@@ -120,6 +120,9 @@ function App() {
     return () => {
       window.removeEventListener('resize', updateLayout);
       if (snapbackTimerRef.current !== null) window.clearTimeout(snapbackTimerRef.current);
+      if (dragRef.current && dragRef.current.frameId !== null) {
+        window.cancelAnimationFrame(dragRef.current.frameId);
+      }
     };
   }, []);
   const beginSkillDrag = (index:number, event:React.PointerEvent<HTMLButtonElement>) => {
