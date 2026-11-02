@@ -366,7 +366,7 @@ Before merging a change:
 
 This repository is a standard Vite static frontend. It can be built with `npm run build` and the generated `dist/` directory can be served by any static hosting provider.
 
-**Hosting is not part of the application architecture.** No Vercel-specific runtime dependency is required by the source code. The Vercel project associated with this repository has been paused; project deletion is a separate owner-confirmed action in the Vercel dashboard.
+**Hosting is not part of the application architecture.** No Vercel-specific runtime dependency is required by the source code. The associated Vercel project has been paused to stop normal production hosting. Its project record, deployment history and aliases still exist until the owner confirms project deletion in the Vercel dashboard.
 
 ---
 
