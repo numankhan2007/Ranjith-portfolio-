@@ -240,7 +240,7 @@ function App() {
           <h1><Letterpress text="Ranjith" /> <em><Letterpress text="M." delay={430} /></em></h1>
           <div className="hero-rule"><span/> <p>Building for the web. Learning by making.</p></div>
           <p className="hero-intro">{profile.bio}</p>
-          <div className="hero-actions"><a className="button button-primary" href="#projects">Explore my work <ArrowDown size={16}/></a><a className="button button-outline" href="#contact">Get in touch <ArrowUpRight size={16}/></a></div>
+          <div className="hero-actions"><a className="button button-primary" href="#projects">Explore my work <ArrowDown size={16}/></a><a className="button button-outline" href="#contact">Get in touch <ArrowUpRight size={16}/></a><a className="hero-instagram" href="https://www.instagram.com/royal_ranjith24?obrf=aWNlYzZsMXo4dWwz" target="_blank" rel="noreferrer" aria-label="Visit Ranjith on Instagram"><Instagram size={17}/> Instagram</a></div>
           <div className="hero-meta"><span><MapPin size={14}/> {profile.location}</span><span>PYTHON / REACT / WEB</span></div>
         </div>
         <div className="hero-aside"><div className="orbit orbit-one"/><div className="orbit orbit-two"/><div className="portrait-frame"><img src="/profile.png" alt="Portrait of Ranjith M" fetchPriority="high"/><span className="portrait-caption">FIG. 01 — THE DEVELOPER</span></div><span className="vertical-note">INDEPENDENTLY CURIOUS · CONSTANTLY BUILDING</span></div>
